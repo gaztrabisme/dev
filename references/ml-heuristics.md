@@ -143,6 +143,17 @@ Ask: **"Does any class have fewer samples than my batch size?"** If yes → per-
 
 Use **macro F1** (unweighted average across classes per task, then averaged across tasks) as the primary checkpoint selection metric. It balances precision and recall and is sensitive to rare-class performance — unlike accuracy, which can be gamed by always predicting the majority class.
 
+### Proxy vs. Decisive Metric
+
+You will iterate on a **cheap proxy** (small pool, held-out slice, mini-harness) and ship on a **decisive gate** (full-scale eval on the real pipeline). Respect the hierarchy or the proxy will lie to you:
+
+- **Proxies rank candidates; only the decisive gate authorizes a ship.** A proxy win is a hypothesis, not a result.
+- **Pre-register the ship threshold before running the decisive gate.** "Ships only if [metric] beats [recorded baseline]" — written down *first*. Choosing the bar after seeing the number launders a regression into a ship.
+- **Sub-noise-floor margins aren't wins.** If the margin is smaller than the proxy's run-to-run variance, the proxy can suggest *direction* but not confirm *magnitude*.
+- **A proxy scoring near-ceiling has stopped measuring.** Fix the eval (see below) before trusting it.
+
+A small in-memory retrieval pool once ranked an enrichment prompt as a +0.006 winner; the pre-registered full-index gate showed it actually *regressed* retrieval and it was reverted. The cheap metric gave a false positive — the gate, reserved as decisive in advance, was the only thing that caught it.
+
 ---
 
 ## Augmentation

@@ -19,6 +19,19 @@ Before any training, define what "done" looks like:
 
 If you can't define convergence criteria, you're not ready to train — go to Design mode first.
 
+### Proxy vs. Decisive Metric (pre-register the gate)
+
+Most experiments are scored on a **cheap proxy** (a small in-memory pool, a held-out slice, a mini-harness) because the **decisive gate** — the full index, the real pipeline, the production-scale eval — is slow or expensive to run every iteration. That split is fine *as long as you respect the hierarchy*:
+
+- **Proxies rank. The decisive gate decides.** A proxy can tell you which of several candidates to carry forward. It cannot tell you whether to *ship*. A win on the proxy is a hypothesis, not a result.
+- **Pre-register the ship threshold before you see the decisive result.** Write down "ships only if [decisive metric] beats [recorded baseline]" *before* running it. Deciding the bar after seeing the number is how confirmation bias launders a regression into a ship.
+- **Margins inside the proxy's noise floor are not wins.** If candidate A beats B by less than the proxy's run-to-run variance, the proxy can rank direction but cannot confirm the magnitude — defer to the decisive gate.
+- **A proxy that scores near-ceiling is measuring the wrong thing** (see Phase 2 — eval-set validity). It can no longer discriminate; fix the proxy before trusting it.
+
+> **Trace that earned this (knowledge-base project):** an 800-chunk in-memory pool ranked a "problem-symptom" enrichment prompt as the winner (+0.006, inside the noise floor). The pre-registered decisive gate — enrich all 48K chunks, re-index, re-eval — showed a **regression** (NDCG 0.7907→0.7759). The whole direction was reverted. The cheap proxy gave a false positive; only the pre-registered full gate caught it.
+
+**Corollary — don't let the expensive gate block cheap certain wins.** If a costly optional pass (full re-enrichment, full retrain) would block a batch of cheap structural improvements, ship the structural wins first with the optional pass stubbed/empty, and run the expensive pass as a separate gated experiment. ("Index-now-enrich-later": structural fixes shipped immediately; the enrichment pass ran later and — per its gate — never shipped.)
+
 ---
 
 ## Phase 2: Validate Data
@@ -55,6 +68,7 @@ Read experiment-log.md → Change ONE variable → Train → Evaluate → Record
 2. **Read the log first** — always, every time. This survives context compression.
 3. **Record before deciding** — write the result before choosing the next experiment. Prevents confirmation bias.
 4. **Stop when criteria met OR diminishing returns** — don't chase the last 0.1% unless the business requires it
+5. **Iterate on the proxy, ship on the decisive gate** — use the cheap metric to rank candidates fast, but a candidate only graduates when it clears the pre-registered decisive gate (Phase 1). Never promote a proxy win straight to ship.
 
 **Typical experiment order** (high-to-low impact):
 1. Architecture / model selection
