@@ -92,6 +92,17 @@ When convergence criteria are met:
 **Handoff to Build mode** for: inference engine, API wrapper, deployment pipeline, monitoring.
 **Handoff to Analyze mode** for: "why do certain classes underperform?", error analysis, failure mode investigation.
 
+### When the experiment says DON'T ship
+
+A pre-registered gate (Phase 1) exists precisely so it can come back negative. **"This change does not ship" is a first-class, successful outcome — not a failure to paper over.** When a candidate loses its gate:
+
+1. **Honor the gate.** You pre-registered the threshold before seeing the result (Phase 1) specifically so you couldn't rationalize a regression into a ship now. Don't move the bar.
+2. **Revert cleanly to the baseline** and confirm the baseline number is restored. Keep the rejected artifacts (e.g. `*_rejected/`, gitignored) so a future revisit doesn't start from scratch.
+3. **Write the post-mortem as the deliverable.** Record *why* it lost and the mechanism — the negative result is reusable knowledge that stops you (and the next session) re-running a dead end. Put it in `wiki/decisions.md` with a "why it failed — the lesson" note, and add a `wiki/` Rejected Approaches entry if it's a whole direction.
+4. **Keep reusable infra.** The harness/optimizer/pipeline you built to run the experiment is still valuable even when the experiment loses — note that it's re-runnable if the corpus/objective changes.
+
+This realizes Integrity Constraint 6 ("Honest failure beats fabricated success") at the experiment level. A sprint that concludes "ship nothing" with a clear post-mortem is a clean win.
+
 ---
 
 ## Experiment Log

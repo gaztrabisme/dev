@@ -101,6 +101,28 @@ Replaces `.tracks/` node files. Each workstream is a section:
 - 2026-04-08: Existing tests mock the session store — need real Redis tests
 ```
 
+### decisions.md
+
+Each decision is **Context → Decision** (why the alternatives lost, the constraint, the tradeoff). Two categories are easy to skip but carry the most future value:
+
+- **Rejected Approaches** — things you evaluated and deliberately did *not* adopt, with *why* (cost, marginal gain, complexity). This is what stops a future session re-litigating a settled question or re-trying a dead end. Keep a standing "Rejected Approaches" section.
+- **Post-mortems on reverted decisions** — when something shipped and was then pulled, or a whole direction lost its gate, record a **"why it failed — the lesson"** note explaining the *mechanism*, not just the outcome. A negative result documented this way is reusable knowledge; an undocumented one gets repeated.
+
+```markdown
+## Rejected Approaches
+### GraphRAG / LightRAG
+**Why considered:** cross-document concept linking.
+**Why rejected:** needs another full LLM pass; marginal gain for single-hop lookups.
+
+## <Direction> — REVERTED (date)
+**Finding:** [the decisive number that killed it]
+**Why it failed — the lesson:** [the mechanism, so nobody re-runs it]
+```
+
+### Other pages that earn their place
+
+`log.md` and `active-work.md` are defaults, not mandates. Real projects also sustain pages like `gotchas.md` (failure patterns + watch-fors) and `ops-runbook.md` (the exact commands to run recurring operations) — create them when the content recurs. Pages earn existence by being referenced; don't force the prescribed set if the project's shape calls for different ones.
+
 ---
 
 ## Operations
