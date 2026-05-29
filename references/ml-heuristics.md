@@ -154,6 +154,17 @@ You will iterate on a **cheap proxy** (small pool, held-out slice, mini-harness)
 
 A small in-memory retrieval pool once ranked an enrichment prompt as a +0.006 winner; the pre-registered full-index gate showed it actually *regressed* retrieval and it was reverted. The cheap metric gave a false positive — the gate, reserved as decisive in advance, was the only thing that caught it.
 
+### Eval-Set Validity (the "measure-the-wrong-thing" trap)
+
+Before you trust *any* number, ask: **"Does this benchmark actually measure the lever I'm pulling?"** A metric that can't move when your change works is worse than no metric — it manufactures false confidence.
+
+- **Near-ceiling baselines are a red flag, not a victory.** If the baseline already scores ~0.95+, the set has no headroom to detect an improvement. The change you're testing literally cannot show up.
+- **Beware positives generated from the answer.** An LLM-generated query written *from* the chunk it should retrieve inherits that chunk's rare vocabulary, so retrieval matches trivially. The eval then measures "can it find the chunk that shares its weird words" — not real recall. **Verify objectively:** measure query↔positive content-word overlap; if it's high, paraphrase the queries into how a real user would phrase them and confirm the overlap dropped.
+- **Distractor pools need hard negatives.** Scoring a positive against a pool of random off-topic items is trivial — the positive wins by default (a flat random pool scored a useless perfect 1.0). Seed the pool with the positive's *real competitors* (same source/section/topic siblings) so the metric has to discriminate.
+- **Match the granularity you actually deliver.** Score at the unit the consumer receives (e.g., parent chunk), not an internal unit, or the number won't reflect delivered quality.
+
+> **Trace (knowledge-base):** the first golden set scored NDCG 0.93 / Recall@50 1.00 — looked excellent, but was generated from the chunks, so it couldn't measure the recall lever enrichment was meant to pull. A paraphrase pass dropped query↔chunk overlap 52% (0.649→0.313) and exposed real headroom (NDCG 0.79). The same trap recurred one level down in the optimizer's distractor pool.
+
 ---
 
 ## Augmentation

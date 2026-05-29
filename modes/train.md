@@ -43,6 +43,7 @@ Before spending compute, verify the data is sound:
 - [ ] Train/val/test splits — no data leakage between splits
 - [ ] Data pipeline — does loading, augmentation, preprocessing produce expected output?
 - [ ] Edge cases — what does the model see for ambiguous/hard examples?
+- [ ] **Eval-set validity** — does the benchmark actually measure the lever you're pulling? Red flags: a near-ceiling baseline (no headroom to detect improvement), positives generated *from* the answer (queries inherit the answer's vocabulary → trivial match), distractor pools without hard negatives. Verify objectively (e.g., query↔positive lexical overlap) before trusting any score. See `ml-heuristics.md` → Eval-Set Validity.
 
 If data pipeline engineering is needed (ingestion, cleaning, transformation), switch to **Build mode** for that work, then return to Train mode.
 
