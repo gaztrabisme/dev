@@ -70,6 +70,14 @@ When building inference pipelines, deployment systems, or anything that will run
 
 ---
 
+## Retrieval / RAG
+
+When building semantic search, RAG pipelines, hybrid retrieval, reranking, or contextual enrichment, consult `references/rag-heuristics.md`. It covers the retrieval-specific decisions — match-unit vs. context-unit chunking, hybrid dense+BM25 fusion, reranker tiers, query-side expansion, enrichment-as-experiment, and retrieval eval harness design.
+
+**Peer to `ml-heuristics.md` and `production-thinking.md`.** Retrieval changes are especially prone to the proxy-metric and eval-set-validity traps in `ml-heuristics.md` Metrics — gate them there. The Knowledge Base MCP also has a `production-rag-guide` book worth searching for deeper theory.
+
+---
+
 ## Mode Detection
 
 | Trigger | Mode | Action |
@@ -119,6 +127,16 @@ Use situationally, not by default.
 |------|------|-----|
 | **Context Hub** (`chub`) | Greenfield builds, unfamiliar libraries | `chub search "lib"` → `chub get <id>` |
 | **GitNexus** (MCP) | Existing codebases — blast radius, call flows, impact analysis | `context`, `impact`, `query`, `detect_changes` |
+| **Knowledge Base** (MCP) | ML, DB, security, distributed systems domain questions | `search("concept")`, `grep_books("exact term")`, `get_chapter(book, ch)` |
+
+### Knowledge Base Consultation
+
+When the task touches a domain covered by the knowledge base (ML algorithms, database internals, security patterns, distributed systems, cryptography):
+- Search the KB for relevant patterns and theory BEFORE designing or implementing
+- Use `search()` with `hyde_passage` for better recall on conceptual queries where the question vocabulary differs from textbook prose
+- Use `extra_queries` to broaden recall with alternative phrasings
+- Use `grep_books()` for exact API names, algorithm names, or specific terms
+- Cite sources in Key Decisions when a KB finding influenced an architectural choice
 
 ---
 

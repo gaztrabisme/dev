@@ -13,6 +13,7 @@ Feature builds via coordinated subagents with test-driven development. YOU are t
 | "Build an app/service/API" | Heavy | Define done + contracts → Phased Build+Test → Verify per phase → Adversarial Review |
 | Unfamiliar domain or tech | +Research | Spawn research subagent when unknowns surface |
 | ML/CV/NLP task | +ML Heuristics | Read `references/ml-heuristics.md` — reframe problem before choosing approach |
+| Retrieval / RAG / semantic search task | +RAG Heuristics | Read `references/rag-heuristics.md` — chunking, hybrid search, rerank, enrichment, eval |
 
 ---
 
