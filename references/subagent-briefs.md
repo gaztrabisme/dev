@@ -20,6 +20,15 @@ Do NOT write implementation code. Present options with tradeoffs.
 If you find multiple viable approaches, compare them in a table.
 ```
 
+**Available knowledge sources:**
+- **Knowledge Base MCP** (46 books: ML, databases, security, distributed systems, cryptography, RAG):
+  - `search("query")` — semantic search, returns ranked chunks with source metadata
+  - `search("query", hyde_passage="...")` — better for conceptual queries with vocabulary gap
+  - `search("query", extra_queries=["alt1", "alt2"])` — broader recall via query expansion
+  - `grep_books("exact term")` — literal keyword search across all book markdown
+  - `get_chapter(book, chapter)` — full chapter text when deeper reading needed
+- **Web search** — for current docs, release notes, and topics not covered by the KB
+
 For parallel research: spawn multiple subagents simultaneously in a single message.
 
 ---

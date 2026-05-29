@@ -24,6 +24,7 @@ Periodic retrospectives that turn real project traces into skill improvements. S
 2. **H2: Eval-set validity trap** — `references/ml-heuristics.md` (Metrics), `modes/train.md` (Phase 2) — applied (commit f903d9e).
 3. **H3: rag-heuristics.md reference** — new `references/rag-heuristics.md`, `SKILL.md`, `modes/build.md` — applied (commit 65df1d9).
 4. **H4: Negative-result discipline** — `modes/train.md` (Phase 5), `references/wiki-protocol.md` — applied (commit bbc24f2). Folds in pattern #6.
+5. **H5: Knowledge Base Grounding Gate** — `SKILL.md` (canonical gate), `modes/design.md`, `modes/train.md`, `modes/build.md`, `references/subagent-briefs.md` (33→46 staleness fix) — applied. Surfaced by a follow-up architectural question, not the harvest: the KB MCP (the corpus this whole project exists to provide) was discoverable but **not integral** — "use situationally" + "research is reactive" + no mode-level gate kept it optional. The gate fires only on KB-covered domains, requires one search + a one-line cite-or-null in Key Decisions, and is skippable by stating the domain isn't covered. Integral where relevant, zero ceremony elsewhere.
 
 Not modified (foundational): Integrity Constraints, Wu Wei filter.
 

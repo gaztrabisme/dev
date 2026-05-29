@@ -121,7 +121,7 @@ Options: `--log-dir DIR` for organized logs, `--runner RUNNER` to force test run
 
 ## Available Tools
 
-Use situationally, not by default.
+Context Hub and GitNexus are situational — reach for them when they fit. The **Knowledge Base is gated** (see Grounding Gate below), not optional, on KB-covered domains.
 
 | Tool | When | How |
 |------|------|-----|
@@ -129,14 +129,18 @@ Use situationally, not by default.
 | **GitNexus** (MCP) | Existing codebases — blast radius, call flows, impact analysis | `context`, `impact`, `query`, `detect_changes` |
 | **Knowledge Base** (MCP) | ML, DB, security, distributed systems domain questions | `search("concept")`, `grep_books("exact term")`, `get_chapter(book, ch)` |
 
-### Knowledge Base Consultation
+### Knowledge Base Grounding Gate
 
-When the task touches a domain covered by the knowledge base (ML algorithms, database internals, security patterns, distributed systems, cryptography):
-- Search the KB for relevant patterns and theory BEFORE designing or implementing
-- Use `search()` with `hyde_passage` for better recall on conceptual queries where the question vocabulary differs from textbook prose
-- Use `extra_queries` to broaden recall with alternative phrasings
-- Use `grep_books()` for exact API names, algorithm names, or specific terms
-- Cite sources in Key Decisions when a KB finding influenced an architectural choice
+The Knowledge Base MCP (46 books: ML, databases, security, distributed systems, cryptography, RAG) is the skill's grounding substrate — domain decisions should be grounded in it, not improvised. This is a **gate**, not a suggestion: Design, Train, and KB-domain Build all enforce it (each mode points here).
+
+**When the task touches a KB-covered domain, BEFORE designing or implementing:**
+
+1. **Search the KB for prior art** — `search("concept")` for theory; `search(..., hyde_passage="...")` when the question vocabulary differs from textbook prose; `extra_queries=[...]` to broaden recall; `grep_books("exact term")` for API/algorithm names; `get_chapter(book, ch)` to read deeper.
+2. **Record the result in Key Decisions, one line** — either:
+   - `KB: searched "<query>" → applied <finding> (book/chapter)`, or
+   - `KB: searched "<query>" → nothing relevant`
+
+**Skippable only by stating the domain isn't covered** (e.g. frontend, infra, glue code). A silent skip on a covered domain is a gate violation. The point is cheap, honest grounding — one search and one line — not ceremony.
 
 ---
 

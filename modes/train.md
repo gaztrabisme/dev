@@ -4,6 +4,8 @@ Iterative ML training loops — finetuning, architecture experiments, hyperparam
 
 Read `references/ml-heuristics.md` for problem reframing and architecture decision heuristics. Read `references/pushback-and-teach.md` — the teach directive applies to ML math too: when you introduce a loss function, activation, optimizer, or architecture choice, narrate the *mechanism* (what it computes, what it penalizes, why the shape is what it is), not just the API call.
 
+**Apply the Knowledge Base Grounding Gate (`SKILL.md`) before Phase 1.** ML is a KB-covered domain — search the corpus for the technique/architecture/metric you're about to use and record `KB: searched "<q>" → <finding|nothing relevant>` in the experiment log or Key Decisions. Ground the approach before spending compute.
+
 ---
 
 ## Phase 1: Define Convergence Criteria

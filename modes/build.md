@@ -15,6 +15,8 @@ Feature builds via coordinated subagents with test-driven development. YOU are t
 | ML/CV/NLP task | +ML Heuristics | Read `references/ml-heuristics.md` — reframe problem before choosing approach |
 | Retrieval / RAG / semantic search task | +RAG Heuristics | Read `references/rag-heuristics.md` — chunking, hybrid search, rerank, enrichment, eval |
 
+**Knowledge Base Grounding Gate:** if the build touches a KB-covered domain (ML, DB, security, distributed systems, crypto, RAG — the `+ML`/`+RAG` rows and any security/DB-internals work), apply the gate in `SKILL.md` before implementing: search the KB and record `KB: searched "<q>" → <finding|nothing relevant>` in Key Decisions. Skippable only by stating the domain isn't covered.
+
 ---
 
 ## Phase 1.5: TDD Decision

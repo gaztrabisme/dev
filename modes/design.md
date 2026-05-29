@@ -26,6 +26,7 @@ Understand what the user wants to build, why, and what constraints exist.
 6. **Teach concept gaps inline** — If the user's framing reveals a missing concept (conflating auth/authz, thinking JWT = session, treating a cache like a DB, etc.), teach the concept in 3–5 sentences with a tagged block (`**Why this matters:**`) before moving on.
 7. **ML work: Reframe before solving** — If the task involves ML/CV/NLP, read `references/ml-heuristics.md` and apply the Problem Reframing questions. Challenge the first approach: "Does the spec actually require this, or are we assuming it?" Teaching applies to ML math/intuition too, not just systems work.
 8. **Greenfield library research** — If the design pulls in unfamiliar libraries, use `chub search "lib"` → `chub get <id>` for accurate API docs instead of guessing signatures. Annotate discoveries for future sessions.
+9. **Ground domain decisions in the KB** — If the design touches a KB-covered domain (ML, DB, security, distributed systems, crypto, RAG), apply the **Knowledge Base Grounding Gate** (`SKILL.md`) before committing to an approach: search the KB for prior art and record `KB: searched "<q>" → <finding|nothing relevant>` in Key Decisions. Don't design a database/security/retrieval approach the corpus could have informed without checking it.
 
 **Hard gate:** Phase 1 does not exit until every top-level decision has a concrete, testable answer. "It should be fast" is not an answer; "p95 latency under 200ms for reads" is. No proceeding to Phase 2 research until this is true.
 
