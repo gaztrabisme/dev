@@ -16,4 +16,6 @@
 - **Direction shift this session:** Gary set the harness as **Rust-native** (forever-personal, local-first,
   KB MCP already Rust). This reframes the external refs (INTEGRATE→STEAL) and makes oh-my-pi a Rust reference
   + beads a schema to extract. Scoped a rigorous foundation eval (DR1 omp / DR2 beads) → `10-eval-scope.md`.
+- Added project `CLAUDE.md` (+ `AGENTS.md` symlink) — the entry-point map + conventions (read wiki first,
+  keep it updated, Align-before-execute, integrity constraints, commit discipline).
 - **Next:** run DR1 + DR2, synthesize the language/runtime decision (`research/11`), then Phase 0.
