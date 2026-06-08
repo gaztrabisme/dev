@@ -1,5 +1,11 @@
 # Personal Dev Harness — Design v2 (research-grounded)
 
+> ⚠️ STATUS (2026-06-08): The runtime/base layer — §2 "Pi adoption layer" and §10 "Pi mapping" — is under
+> revision. Gary set a **Rust-native** direction; the foundation eval (`research/10-eval-scope.md`) is
+> pressure-testing strategy A (full Rust) / B (Rust core + TS orchestration, the omp model) / C (stay
+> TS-on-Pi). Everything else (three planes, five pillars, the spine, memory model, gates) stands. Current
+> state of record: `wiki/`.
+
 > Supersedes the v1 high-level design. Every major decision here is grounded in the six breadth
 > findings docs (`research/01..06`). v1 named six open questions; **breadth resolved all six** — they
 > are answered in the table below. What remains is *build risk*, concentrated in two repos we must
