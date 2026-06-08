@@ -37,10 +37,19 @@ different providers. Validated: oMLX drops into Pi via `openai-completions` + `b
 
 ---
 
-## OPEN — Foundation decision (under eval, `research/10`)
-**Language/runtime strategy:** A (full Rust-native, own-core) / B (Rust core + TS orchestration, the omp
-model) / C (stay TS-on-Pi). Plus base reuse list (DR1 = omp teardown) and board (DR2 = beads schema).
-Gary's lean: Rust-native, *to be pressure-tested*. Gates Phase 0. → `research/11-foundation-decision.md`.
+## Foundation: Rust-native own-core — RESOLVED (signed off 2026-06-08)
+**Context:** the language/runtime strategy gated Phase 0; pressure-tested via DR1 (oh-my-pi, `research/11`),
+DR2 (beads, `research/12`), DR2-prime (beads_rust, `research/15`); synthesized in `research/13`.
+**Decision:** **Strategy A — full Rust-native own-core.** Own agent loop + tool dispatch + a typed `enum Phase`
+Align gate; **lift `crates/pi-iso`** (oh-my-pi) for worktree isolation; board hand-rolled on **`rusqlite`
+(SQLite + JSONL)**, **porting `beads_rust`'s `close_policy.rs` state-machine + gate engine** (~250 lines);
+minimal Rust provider layer (oMLX + Anthropic, ~1.5k LoC). Mine pi-mono/omp/symphony/beads for designs; depend
+on none. **Phase 0 opens with a bounded sizing spike** (own loop + 2 providers + Rust gate + pi-iso → oMLX)
+before the trunk; fallback if sizing balloons = C (stay TS-on-Pi).
+**Why B/C lost:** B (Rust core + TS brain, the omp model) — DR1 found omp's agent loop/tools/providers/gate are
+100% TS, so B hands us none of A's hard parts and couples us to a solo fork; the one severable Rust asset
+(`pi-iso`) we lift anyway. C (stay TS-on-Pi) — couples us to two upstreams forever and forfeits the
+compiler-as-guardrail the self-building endgame wants.
 
 ---
 
@@ -68,7 +77,18 @@ model. We borrow its structure (board/workpad/state-machine/land) but invert the
 **Why rejected:** flat MessagePack save/recall, no embeddings or top-k — below our P3 bar. Reference its
 module-toggle ergonomics at most.
 
-### beads / repowise as runtime dependencies (provisional, pending DR2)
-**Why considered:** beads = purpose-built agent board; repowise = code-health intelligence.
-**Why leaning rejected:** beads is Go, repowise AGPL — under a Rust-native core we **steal the schema/patterns**
-rather than run the binaries. To be confirmed by DR2.
+### oh-my-pi as the base (Strategy B) — REJECTED
+**Why considered:** omp is a maintained superset of pi-mono with a ~27k-LoC Rust core; looked like it'd hand us
+~60% of the Execution + Memory planes for free.
+**Why rejected (DR1, `research/11`):** the Rust core is **leaf systems-primitives only** — the agent loop, tool
+execution, providers, and the gate are 100% TypeScript. Building on omp buys none of the hard parts (we'd
+reimplement them under a Rust core anyway) and couples us to a solo fork. We **lift only `crates/pi-iso`**
+(cleanly severable) and own the rest.
+
+### beads / beads_rust (`br`) / repowise as runtime dependencies — REJECTED
+**Why considered:** beads + br = purpose-built agent boards; repowise = code-health intelligence.
+**Why rejected (DR2 `research/12`, DR2-prime `research/15`):** beads is Go + Dolt; **`br` is welded to `fsqlite`**
+(single-maintainer *alpha* pure-Rust SQLite) + pinned nightly + ~180k LoC we'd use ~10% of; repowise is AGPL.
+Under a Rust-native core we **steal the designs** — port br's `close_policy.rs` gate engine + its simpler edge
+table onto our own `rusqlite` board — and depend on none. (br's gate engine corrected DR2's assumption that
+beads had no state machine: br has one, already built + tested.)

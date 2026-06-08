@@ -19,3 +19,14 @@
 - Added project `CLAUDE.md` (+ `AGENTS.md` symlink) — the entry-point map + conventions (read wiki first,
   keep it updated, Align-before-execute, integrity constraints, commit discipline).
 - **Next:** run DR1 + DR2, synthesize the language/runtime decision (`research/11`), then Phase 0.
+
+## [2026-06-08] session | Foundation eval complete — Strategy A locked (signed off)
+- Ran DR1 (oh-my-pi → `research/11`), DR2 (beads → `research/12`), DR2-prime (beads_rust/`br` → `research/15`);
+  synthesized `research/13`; cataloged the author constellation `research/14` (Jeffrey Emanuel's Rust agent-flywheel).
+- **Decision (signed off): Strategy A — full Rust-native own-core.** Lift `crates/pi-iso`; board on `rusqlite`
+  (SQLite + JSONL) porting `br`'s `close_policy.rs` state-machine + gate engine (~250 lines); minimal Rust
+  provider layer; Phase 0 opens with a sizing spike. B rejected (omp's agent brain is all TS), adopt-`br`
+  rejected (welded to fsqlite-alpha + nightly + 180k LoC).
+- Flipped `wiki/decisions.md` (OPEN→RESOLVED; rejected omp-as-base and beads/br/repowise-as-runtime-deps);
+  rewrote design-v2 §2 (rows 1–3, 6) + §10 to the Rust-native foundation.
+- **Next:** Gary clarifying 2 things before Phase 0 — the sizing spike is **held**, not kicked off.

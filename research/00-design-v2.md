@@ -1,10 +1,10 @@
 # Personal Dev Harness — Design v2 (research-grounded)
 
-> ⚠️ STATUS (2026-06-08): The runtime/base layer — §2 "Pi adoption layer" and §10 "Pi mapping" — is under
-> revision. Gary set a **Rust-native** direction; the foundation eval (`research/10-eval-scope.md`) is
-> pressure-testing strategy A (full Rust) / B (Rust core + TS orchestration, the omp model) / C (stay
-> TS-on-Pi). Everything else (three planes, five pillars, the spine, memory model, gates) stands. Current
-> state of record: `wiki/`.
+> ✅ STATUS (2026-06-08): Foundation **RESOLVED → Strategy A (full Rust-native own-core)**, signed off. §2
+> (rows 1–3, 6) and §10 are rewritten to the Rust-native foundation; v1's "EXTEND pi-coding-agent via TS" is
+> superseded. Full decision + evidence: `research/13-foundation-decision.md` (DR1 `11` / DR2 `12` / DR2-prime
+> `15`). Everything above the substrate (planes, pillars, spine, memory model, gates) is unchanged. State of
+> record: `wiki/`.
 
 > Supersedes the v1 high-level design. Every major decision here is grounded in the six breadth
 > findings docs (`research/01..06`). v1 named six open questions; **breadth resolved all six** — they
@@ -33,12 +33,12 @@ layer evolves under a **constitution/case-law** split.
 
 | # | Question | Resolved answer | Source |
 |---|---|---|---|
-| 1 | **Board substrate** | **Local file-backed board** — markdown tickets, git-tracked, Obsidian-visible (durable + human/AI co-editable; matches "deps are liabilities"). The board + workpads are **durable**; only the coordinator's claim/lease layer is ephemeral (rebuilt from the board on restart). | T2, T6 |
-| 2 | **Pi adoption layer** | **EXTEND `pi-coding-agent` via its `ExtensionAPI`**; depend directly on `pi-ai` + `pi-agent-core` for low-level control; **fork only the subagent *example* extension**. Do not fork the host (TUI/providers/sessions/compaction/MCP/OAuth are well-maintained). Headless later via the coding-agent **SDK/RPC seam**, not raw `agentLoop`. | T6 |
-| 3 | **Deployment** | **Live as a Pi extension in Pi's TUI.** Pi implements the Agent Skills standard and **can load `~/.claude/skills` directly** — so the entire judgment layer (this `dev` skill's references) ports with near-zero work and the harness coexists with Claude Code. | T6 |
+| 1 | **Board substrate** | **Hand-rolled board on `rusqlite` (SQLite) + JSONL export** (git-trackable). Tickets with workpad fields inline + a typed `edge` table + a `gate_results` ledger; board + workpads **durable**, claim/lease ephemeral (rebuilt on restart). Supersedes v1's markdown board — DR2/DR2-prime showed SQLite+JSONL is the right substrate (Dolt + markdown rejected). | DR2, DR2-prime |
+| 2 | **Runtime / base** | **Full Rust-native own-core (Strategy A).** Own agent loop + tool dispatch + a typed `enum Phase` Align gate; **lift `crates/pi-iso`** (oh-my-pi) for worktree isolation; minimal Rust provider layer (~1.5k LoC). Mine pi-mono/omp/symphony/beads for designs, depend on none. Supersedes v1's "EXTEND pi-coding-agent via TS" — DR1: omp's agent brain is all TS (B buys nothing severable); the gate ports cleaner in Rust. | DR1 |
+| 3 | **Deployment** | **Standalone Rust TUI (`ratatui`), local-first single binary.** The `dev` skill's judgment layer (`references/*`) ports as data/prompts the harness reads, not as a Pi extension. Supersedes v1's "live as a Pi extension." | DR1 |
 | 4 | **Memory decay policy** | **Resolved in full** (schema, decay formula, retrieval score, tiers, reflection) — see §6. CoALA rule: decay applies to the episodic sidecar only; wiki prose never ages out. | T1 |
 | 5 | **Mutation scope** | **Harden gate between Test and Implement**, scoped to the diff (incremental), ≥85% mutation score on critical code / ~70% soft elsewhere, equivalence-judge to drop un-killable mutants, ML fallback = metamorphic + property + criteria-coverage adversary — see §7. | T3 |
-| 6 | **Model-per-role** | First-class in `pi-ai` (`getModel(provider,id)`, cross-provider handoff built-in). Recon→local oMLX/Haiku; build→Sonnet; coordination+adversarial→Opus; **test-author and mutator on different providers** (decorrelation). oMLX drops in via `openai-completions` + `baseUrl`. | T3, T6 |
+| 6 | **Model-per-role** | Retained; implemented by **our minimal Rust provider layer** (not pi-ai). Recon→local oMLX/Haiku; build→Sonnet; coordination+adversarial→Opus; **test-author and mutator on different providers** (decorrelation). oMLX via `openai-completions` + `baseUrl`. | T3, DR1 |
 
 ---
 
@@ -245,29 +245,37 @@ The evidence floor is the guard; may need an explicit anti-vacuity check.
 
 ---
 
-## 10. Pi mapping (from T6) — adopt vs build
+## 10. Foundation mapping (Rust-native) — lift vs reference vs build
 
-**Pi gives us (adopt as-is):** multi-provider model layer + per-role selection + cross-provider handoff +
-local-endpoint (oMLX/vLLM) support; the streaming agent runtime (parallel/sequential tools, steering, abort,
-thinking levels); **tool-call gating** (`tool_call` → `{block, reason}`); context/compaction hooks; SKILL.md
-(loads `~/.claude/skills`); subagents (single/parallel/chain, as a forkable example extension); JSONL **tree**
-sessions with branching/labels/custom-entries; a very wide `ExtensionAPI`.
+> Supersedes the v1 "adopt Pi as-is" mapping. Full decision + evidence: `research/13-foundation-decision.md`
+> (DR1 `11` / DR2 `12` / DR2-prime `15`).
 
-**We build:** the **board/state-machine** (extension holding phase state, gating tools per phase, durable via
-`appendEntry`/`custom` entries + file board); the **workpad** (session custom entries + fs convention); the
-**memory plane** (Pi has no semantic cross-session index); **per-subagent worktree isolation** (wrap the
-subagent launcher — Pi shares cwd); coordination beyond chain/parallel (a real board-driven team).
+**Strategy A — full Rust-native own-core.** We own the agent loop, tool dispatch, gate, board, providers,
+memory, and TUI; we depend on no external agent runtime and mine the references for *designs*.
 
-**The gate mechanism (verified in docs):** `pi.on("tool_call", …)` runs **first-block-wins, early-exit**, can
-**block** execution tools and **mutate `event.input`** or `await ctx.ui.confirm()`. Align gate = hold an
-`aligned`/phase flag in extension closure (restored from session `custom` entries on reload), block
-`bash/write/edit` until a `/align` command flips it; harden with `setActiveTools([…read-only…])` during the
-align phase so execution tools aren't even offered. This is the single most important confirmation: **our
-core enforcement primitive exists and is exactly the right shape.**
+**Lift (as source/crate, owned):**
+- `crates/pi-iso` (oh-my-pi) — worktree/sandbox isolation, cleanly severable → our **P2** isolation.
+- `beads_rust`'s `close_policy.rs` (~250 lines) — allowed-transition map + per-transition **gate engine** +
+  `gate_results(issue, gate, provider, passed)` ledger → our spine's enforcement core (adapted to Align/Verify/Review/Land).
+- beads' simpler edge model `(issue, depends_on, kind)` + the recursive-CTE `ready` query (clean because we use
+  *real* SQLite via `rusqlite`; br fell back to BFS only because `fsqlite` can't run CTEs).
 
-**Adoption shape:** one installable Pi extension (or a small set) that registers (1) the phase/Align gate on
-`tool_call`; (2) board/phase commands; (3) custom tools (workpad, memory query); (4) a forked subagent
-extension with worktree isolation + model-per-role; (5) our oMLX/local providers.
+**Reference (designs, depend on none):** pi-ai's `api`-discriminant provider design; oh-my-pi's swarm DAG
+orchestration; Symphony's reconcile/dispatch/land mechanics (`research/08`); the **spike-07 TS gate** as the
+port reference.
+
+**Build (ours):** the Rust agent loop + tool dispatch; the **Align gate** as a typed `enum Phase` checked in
+the loop (`Gate::check`, compiler-enforced) — spike-07's primitive re-expressed in Rust; the board/state-machine
+on `rusqlite`; the workpad; the memory plane (oMLX embeddings + retrieval); coordination (board-driven workers
+in `pi-iso` worktrees); the `ratatui` TUI; the minimal provider layer (oMLX + Anthropic).
+
+**The gate in Rust (replaces the TS `tool_call` hook):** the loop checks `Phase` before dispatching any
+mutating tool — `align` denies exec tools (read-only allowed); `/align` flips the phase (persisted as a board
+row); survives reload by construction. Validated in concept by spike-07 (TS); re-validated on Rust by the
+Phase-0 sizing spike. **The core enforcement primitive is exactly the right shape and ports cleaner in Rust.**
+
+**Phase-0 opener:** a bounded sizing spike — own loop + 2 provider clients + the Rust gate + lifted `pi-iso`
+driving oMLX — *before* the trunk. Fallback if sizing balloons: C (stay TS-on-Pi).
 
 ---
 
