@@ -143,6 +143,10 @@ Ask: **"Does any class have fewer samples than my batch size?"** If yes → per-
 
 Use **macro F1** (unweighted average across classes per task, then averaged across tasks) as the primary checkpoint selection metric. It balances precision and recall and is sensitive to rare-class performance — unlike accuracy, which can be gamed by always predicting the majority class.
 
+### Decompose Composite Metrics — Report Each Axis
+
+A single score that blends multiple axes (F1 over precision+recall, a quality score over fluency+faithfulness, a combined latency+accuracy gate) can stay flat while the axes underneath move in opposite directions and cancel. The aggregate says "no change"; the truth is "recall collapsed, precision spiked, and they happened to net to zero." **Select on one primary metric, but always log the components beside it.** When you report a composite, show the breakdown — the aggregate is for ranking, the per-axis split is for *understanding what your change actually did*. The first question on any surprising aggregate is "which axis moved?", and you can only answer it if you recorded them separately.
+
 ### Proxy vs. Decisive Metric
 
 You will iterate on a **cheap proxy** (small pool, held-out slice, mini-harness) and ship on a **decisive gate** (full-scale eval on the real pipeline). Respect the hierarchy or the proxy will lie to you:

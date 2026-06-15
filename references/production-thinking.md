@@ -259,6 +259,8 @@ The senior asks: **"How does this fail at 3am?"** Not just "does it work" but "h
    - **Better:** reduce inference FPS, keep HLS streaming, alert at lower frequency
    - **Best:** automatically shed load (pause low-priority cameras), alert ops team
 
+5. **"Does the terminal signal encode HOW it ended, not just THAT it ended?"** A status that collapses distinct endings into one token throws away the information you need to react. `failed` tells you to look; `stalled` (no progress before the deadline) vs `truncated` (hit the output cap mid-stream) vs `looped` (same action repeating) vs `rejected` (gate refused it) tells you *what to do* — and lets a caller branch without re-deriving the cause from logs. When you design an exit code, a job state, or a return enum, give each failure mode its own label. The cost of one extra variant is a line; the cost of conflating them is a 3am log-archaeology session.
+
 ### The Silent Failure Checklist
 
 For each pipeline component, define:
