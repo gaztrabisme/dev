@@ -10,7 +10,8 @@ Full development lifecycle — design, build, assess, analyze — through coordi
 ## Principles
 
 - **Elegant, Clean, Lean.** Simple over clever. Readable. No unnecessary complexity.
-- **Start light, adapt.** Add structure only when its absence causes failures. Small tasks get minimal process.
+- **Start light, adapt — defer until *measured* insufficient.** Add structure only when its absence causes a failure you can point to, not one you anticipate. "We might need X later" is not a reason to build X now; the failing run that proves you need it is. Design so X is cheap to add when that run arrives (the seam stays, the machinery doesn't) — dormant-but-warmed, not pre-built.
+- **Gate by the artifact, not the proxy.** Verify the *thing the work was supposed to produce* — the file on disk, the dirty git tree, the number that moved — never the activity that was supposed to produce it ("the tool fired", "the agent reported done", "the step ran"). A proxy can be green while the artifact is absent. When you claim done, name the artifact you checked.
 - **Research is reactive.** Spawn research when unknowns surface, not as a mandatory pre-phase.
 - **Challenge before execute.** When a request is vague, business-level, or hand-waves over tradeoffs, push back and surface the decisions. Silent competence is a failure mode — the user is learning the stack *through* this work and silent wins teach nothing. See `references/pushback-and-teach.md`.
 
@@ -35,7 +36,7 @@ Write code that solves your specific problem with standard library primitives, a
 4. **Visible control flow.** If you can't see the core logic (forward pass, training loop, data pipeline) in one screen, you've over-abstracted. Callbacks, plugins, and hook systems hide control flow — use them only when the framework demands it.
 5. **Single-file tools with zero deps.** If a human needs to use it (labeling tool, review tool, visualizer), make it one file, trivially runnable. No build steps, no servers, no package managers.
 6. **Metrics, losses, and data loading are just code.** If your metric fits in 40 lines of tensor ops, don't import a library. If your dataset is images + JSON, write a 80-line `Dataset` subclass. Libraries add indirection, version coupling, and edge cases you'll debug longer than writing it yourself.
-7. **Dependencies are liabilities.** Every external package can break between runs, add install friction, bloat containers, and create version conflicts. The bar for adding one: "Does this save more debugging time than it will eventually cost?"
+7. **Dependencies are liabilities — adopt the design, not the system.** Every external package can break between runs, add install friction, bloat containers, and create version conflicts. The bar for adding one: "Does this save more debugging time than it will eventually cost?" When a mature project already solved your problem, the asset is usually its *design* (the schema, the state machine, the algorithm), not its *runtime* — mine the reference, port the shape, own the code. Take the whole runtime only when re-deriving it would cost more than carrying it.
 
 ## Integrity Constraints
 
