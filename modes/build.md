@@ -146,6 +146,8 @@ Spawn in this order:
 
 Read `references/subagent-briefs.md` for exact prompt templates. When briefing subagents, provide ONLY the relevant prompt constraints from that file plus task-specific context. Do not forward skill-level instructions.
 
+**Worker VCS hygiene (non-negotiable when subagents write code).** Workers produce file changes; the **coordinator** owns the index and the commit. No subagent runs `git add -A`/`.`, `git commit`, or any branch/reset/stash/checkout — see the isolation constraint at the top of `references/subagent-briefs.md`. When two or more implementation subagents run **in parallel**, give each its **own git worktree** so their edits can't collide or cross-stage; a shared checkout with concurrent writers corrupts silently. Reviewing and staging by explicit path is the coordinator's job, after the workers return.
+
 ---
 
 ## Phase 4: Verify

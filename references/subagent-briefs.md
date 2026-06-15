@@ -2,6 +2,8 @@
 
 Prompt templates for each subagent type. The coordinator reads the relevant brief and passes ONLY that brief plus task-specific context to the subagent. Subagents never see the full skill.
 
+**Isolation constraint (every brief that mutates state inherits this).** A subagent that writes files or runs bash must touch only its assigned working tree, and must never run repo-wide VCS mutations — no `git add -A`/`git add .`, no `git commit`, no `git checkout`/`git reset`/`git stash`, no branch or remote operations. When multiple subagents run in parallel, give each its own git worktree so their edits cannot collide or stage each other's churn; a shared checkout with concurrent writers is a corruption waiting to happen. The coordinator owns the index and the commit — workers produce file changes, the coordinator reviews and stages them by explicit path. State this verbatim in any brief you hand a worker with write/bash access.
+
 ---
 
 ## Research Subagent
@@ -53,6 +55,18 @@ Write tests that verify contract compliance. Tests are executable specifications
 - Do NOT read or write implementation code
 - Do NOT mock/stub the system under test
 - Run tests: bash {baseDir}/scripts/run-tests.sh [test-path]
+
+TEST DESIGN — force the failure with the smallest input:
+  Each test should fail for exactly ONE reason, driven by the SMALLEST input
+  that triggers the behavior under test. A test that needs a large fixture to
+  fail can't tell you WHICH part broke; a test that fails on a one-line input
+  points straight at the cause.
+  - Prefer the minimal case that exercises the clause (one row, one field,
+    one boundary value) over a realistic-but-noisy fixture.
+  - Assert on the specific observable, not an incidental side effect.
+  - For boundary clauses, test the exact edge (n, n-1, n+1), not a value
+    "well inside" the range — the edge is where implementations break.
+  A good failing test reads like a bug report: minimal repro, one cause.
 
 TEST NAMING — use contract-traceable names:
   Pattern: test_<contract_clause>_<behavior>
