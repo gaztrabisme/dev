@@ -105,5 +105,6 @@ Planning is done when ALL of these are true:
 - [ ] You can **name the remaining unknowns** and they're acceptable risks, not blockers
 - [ ] Spec adversarial review has **no unresolved CRITICAL findings**
 - [ ] A stranger could read the spec and **build the right thing** without asking you questions
+- [ ] **Output contract:** the spec/design page exists in `wiki/` and the choice + rejected alternatives are recorded in `decisions.md` (see `references/wiki-protocol.md` → Output Contract). Design is not done until these files exist.
 
 When complete: summarize what was produced, confirm with user, transition to Build mode using design artifacts as input.

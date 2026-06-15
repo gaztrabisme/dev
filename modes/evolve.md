@@ -150,7 +150,7 @@ Run the evolved skill on a real project and compare traces.
 
 ### Evolution Log
 
-Maintain in the skill repo:
+**Output contract:** evolve is not done until this entry exists (this skill: `EVOLUTION.md`; other projects: `wiki/decisions.md` + `log.md`). See `references/wiki-protocol.md` → Output Contract. Maintain in the skill repo:
 
 ```markdown
 ## Evolution [N] — [date]

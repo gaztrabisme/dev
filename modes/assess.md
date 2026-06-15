@@ -84,6 +84,8 @@ Structure the report:
 
 Save to `logs/assessment-report.md`.
 
+**Output contract:** also write the findings as a wiki page (`wiki/assessment-<date>.md`), link it from `index.md`, and append a `log.md` entry. The assessment isn't done until that page exists — `logs/` is scratch; the wiki is the durable record the next session reads. See `references/wiki-protocol.md` → Output Contract.
+
 ## Phase 4: Act (If User Approves)
 
 One change at a time. Verify after each (tests pass, no runtime errors). User controls progression.
@@ -113,5 +115,7 @@ Analyze asks "what's wrong with the *results*?" vs Assess which asks "what's wro
 Save to `logs/`:
 - `analysis.md` — findings with taxonomy, causal model, rankings
 - `eval-results.md` — before/after data if experiments were run
+
+**Output contract:** promote the findings into the wiki — a `wiki/analysis-<topic>.md` page (taxonomy, causal model, decisive numbers), linked from `index.md`, plus a `log.md` entry; record any direction-changing conclusion in `decisions.md`. The analysis isn't done until that page exists. See `references/wiki-protocol.md` → Output Contract.
 
 Analyze often chains into Build (implement the top-ranked fix) or further Analyze (validate the fix worked).

@@ -94,6 +94,8 @@ When convergence criteria are met:
 **Handoff to Build mode** for: inference engine, API wrapper, deployment pipeline, monitoring.
 **Handoff to Analyze mode** for: "why do certain classes underperform?", error analysis, failure mode investigation.
 
+**Output contract:** the experiment isn't done until the `experiment-log.md` entry exists (config, metric vs. pre-registered baseline, verdict) and any direction-changing result is in `wiki/decisions.md`. A negative result is a required write, not an optional one. See `references/wiki-protocol.md` → Output Contract.
+
 ### When the experiment says DON'T ship
 
 A pre-registered gate (Phase 1) exists precisely so it can come back negative. **"This change does not ship" is a first-class, successful outcome — not a failure to paper over.** When a candidate loses its gate:

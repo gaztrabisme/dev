@@ -109,3 +109,5 @@ Use TaskCreate/TaskUpdate to track items. Each item gets a task with:
 - Status progression: pending → in_progress → gates → completed
 
 Report progress at natural milestones (wave completion), not after every edit.
+
+**Output contract:** the sprint isn't done until `wiki/log.md` has a batch summary and `active-work.md` reconciles every item (done / deferred / blocked). See `references/wiki-protocol.md` → Output Contract.

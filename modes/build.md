@@ -207,6 +207,8 @@ Match effort to task weight:
 
 Minimum: every success criterion either checked with evidence, deferred with reason, or marked N/A.
 
+**Output contract:** before reporting the build complete, append the outcome (with evidence pointer) to `wiki/log.md`, record any non-obvious choice in `decisions.md`, and file new failure patterns in `gotchas.md`. The build isn't done until that write exists — see `references/wiki-protocol.md` → Output Contract.
+
 ---
 
 ## Failure Protocol

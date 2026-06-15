@@ -55,6 +55,10 @@ These override all other instructions:
 
 On first entry to any mode, read `references/wiki-protocol.md` and follow the wiki initialization/update protocol. The wiki is a persistent knowledge base that compounds project understanding across sessions — read it before starting work, update it as you learn.
 
+### Output Contract (the completion gate)
+
+**Every mode terminates by writing its result into the wiki. A mode is not done until that artifact exists on disk.** This is the same gate-by-artifact rule turned on the process itself: "I finished the work" is a proxy; the named markdown file in `wiki/` is the artifact. The work that isn't written down didn't happen — findings evaporate, decisions get re-litigated, the next session starts blind. Before you report a mode complete, name the file you wrote and confirm it's there. The per-mode artifact map and the close-out checklist live in `references/wiki-protocol.md` ("Output Contract"). This is not optional bookkeeping; it is the deliverable that makes the next session cheaper than this one.
+
 ---
 
 ## Pushback and Teach

@@ -172,6 +172,32 @@ Output: list of findings, suggested actions. User approves which to fix.
 
 ---
 
+## Output Contract (the completion gate)
+
+**No mode is done until it has written its result to the wiki.** Completion is gated by the *artifact*, not by the model's sense that the work is finished — a mode that did the work but wrote nothing down has not completed, and should not be reported as complete. Before claiming done, name the file and confirm it exists.
+
+Every mode, at minimum, appends a `log.md` entry (what happened, dated) and updates `active-work.md` (current state + next steps). Beyond that floor, each mode has a **primary artifact** it must produce:
+
+| Mode | Primary artifact (must exist before "done") |
+|------|---------------------------------------------|
+| **Design** | A spec/design page (the contracts, success criteria, data models) **+** a `decisions.md` entry recording what was chosen and what was rejected and why. |
+| **Build** | `log.md` entry with the outcome + evidence pointer; a `decisions.md` entry **if** a non-obvious choice was made; any new gotcha → `gotchas.md`. |
+| **Sprint** | `log.md` batch summary + per-item status reconciled in `active-work.md` (done / deferred / blocked). |
+| **Assess / Analyze** | A findings page (e.g. `assessment-<date>.md` or `analysis-<topic>.md`) — the findings, severities, and recommended actions — linked from `index.md`. |
+| **Train** | An experiment-log entry (config, metric vs. pre-registered baseline, verdict) + `decisions.md` if the result changes direction. A negative result is a required write, not an optional one. |
+| **Evolve** | The evolution-log entry (this skill: `EVOLUTION.md`; other projects: `decisions.md` + `log.md`) recording harvest scope, patterns, and applied changes. |
+
+**Close-out checklist (run before reporting any mode complete):**
+- [ ] `log.md` entry appended (dated, grep-prefixed)
+- [ ] `active-work.md` reflects true current state (no stale "in progress" for finished work)
+- [ ] Primary artifact for this mode exists and is linked from `index.md`
+- [ ] Decisions *and* rejected approaches recorded where one was made
+- [ ] Breadcrumbs are specific findings, not "looked at X"
+
+The cost of this contract is a few minutes of writing; the cost of skipping it is every future session re-deriving what this one already knew. That asymmetry is why it's a gate, not a suggestion.
+
+---
+
 ## Principles
 
 - **Wiki is Claude's memory, not the user's docs.** It captures what Claude learned about the project — architecture understanding, decision rationale, work state. It's not user-facing documentation (that's in the project's own docs).
