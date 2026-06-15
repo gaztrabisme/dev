@@ -35,3 +35,45 @@ Not modified (foundational): Integrity Constraints, Wu Wei filter.
 - Negative experiments end with clean revert + post-mortem (not silent drop): [after: ?]
 - New friction/regressions introduced: [after: ?]
 - Verdict: [keep/revert/refine — pending]
+
+---
+
+## Evolution 2 — 2026-06-15
+
+### Harvest scope
+- Projects: `harness` (`../harness/`) — the Rust-native dev harness re-platformed *from this skill*.
+- Trace analyzed: full `wiki/decisions.md` (1205 lines) + design-v2 + CLAUDE.md, spanning the months-long Phase 0 sizing spike → foundation lock (Strategy A).
+- Why this project: it is the most rigorous, longest-running dogfood of this skill's own principles. Reverse-engineering direction: the *engineering decisions* made while building the harness are the trace; the lesson is what the harness had to make **load-bearing** because advisory prose got ignored — which points exactly at where this skill's prose still hand-waves.
+- Meta-principle synthesized: **the gap between "looks done" and "is done" is where everything fails — close it with an artifact, a number, or a structural guarantee, never with prose.**
+
+### Patterns found
+1. **Gate by the artifact, not the proxy** — Impact: H, Effort: L. (Harness verifies the produced thing — `git dirty`, the file — never the activity that should produce it. "Tool fired"/"agent reported done" are proxies that go green while the artifact is absent.)
+2. **Defer until *measured* insufficient** (dormant-but-warmed infra) — Impact: M-H, Effort: L. (Build the seam, not the machinery; the failing run that proves you need X is the trigger, not the anticipation of X.)
+3. **Adopt the design, not the system** — Impact: M, Effort: L. (`pi-iso` lifted verbatim where re-deriving cost more; everything else mined for *shape* and re-owned. Sharpens "dependencies are liabilities.")
+4. **Adversarial review needs a trigger rule, not "skip light builds"** — Impact: M, Effort: L. (Review earns its cost only when a mistake is hard-to-reverse OR silent; elsewhere it's theatre that trains the team to ignore reviews.)
+5. **Terminal labels encode HOW, not just THAT** — Impact: M, Effort: L. (`stalled`/`truncated`/`looped`/`rejected` ≫ `failed`; a status that collapses failure modes destroys the info needed to branch on it.)
+6. **Decompose composite metrics per-axis** — Impact: M, Effort: L. (An aggregate stays flat while axes move opposite and cancel; log the components beside the primary.)
+7. **Subagent VCS-mutation safety** — Impact: H, Effort: L. (Parallel writers on a shared checkout corrupt silently; confine each to its own worktree, coordinator owns the index/commit.)
+8. **Force the failure with the smallest input** — Impact: M, Effort: L. (A test that fails on a one-line input points at the cause; one needing a big fixture can't.)
+9. **Enforced output contract (the keystone)** — Impact: H, Effort: M. (Harness memory-plane: a worker can't reach Done without its findings artifact; a gate checks it exists. Reverse-engineered into: every mode terminates by writing its named wiki md, and isn't done until that file exists.)
+
+### Hypotheses applied
+1. **① Adversarial-review trigger rule** — `modes/design.md` Phase 4 (replaced vague "Skip for: Light builds") — applied. (Pattern #4.)
+2. **① Gate by the artifact, not the proxy** — `SKILL.md` Principles (new bullet) — applied. (Pattern #1.)
+3. **② Defer-until-measured + adopt-design-not-system** — `SKILL.md` Principles ("Start light, adapt" rewritten) + Engineering Style #7 — applied. (Patterns #2, #3.)
+4. **③ Signal integrity** — `references/production-thinking.md` (Operational Failure Modes, forcing Q5) + `references/ml-heuristics.md` (Metrics, "Decompose Composite Metrics") — applied. (Patterns #5, #6.)
+5. **④ Multi-agent & test hygiene** — `references/subagent-briefs.md` (global isolation constraint + Test Subagent "force the failure") + `modes/build.md` (worker VCS hygiene) — applied. (Patterns #7, #8.)
+6. **⑤ Enforced output contract** — `SKILL.md` (Output Contract gate) + `references/wiki-protocol.md` (per-mode artifact map + close-out checklist) + light close-out gate in all six modes (`design`/`build`/`sprint`/`assess`+`analyze`/`train`/`evolve`) — applied. (Pattern #9.)
+
+Dropped on Wu Wei (skip is visible): migrate-first DB primitive (schema-specific, below skill altitude) and path-confinement security mechanics (harness-runtime, not instruction-altitude).
+
+Not modified (foundational): Integrity Constraints, Wu Wei filter.
+
+### Validation results (fill after next 3–5 builds across modes)
+- Modes terminate with their named wiki artifact present (output contract honored, not skipped): [after: ?]
+- Adversarial review fires on hard-to-reverse/silent specs and is skipped elsewhere without ceremony: [after: ?]
+- "Done" claims name the artifact checked, not the activity run: [after: ?]
+- Parallel subagent builds use per-worktree isolation; zero cross-staged churn on main: [after: ?]
+- Composite-metric reports show per-axis breakdown: [after: ?]
+- New friction/regressions introduced (esp. output-contract feeling like bureaucracy on light tasks): [after: ?]
+- Verdict: [keep/revert/refine — pending]
