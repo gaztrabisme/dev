@@ -183,7 +183,7 @@ Before you trust *any* number, ask: **"Does this benchmark actually measure the 
 
 ## Experiment Design (controls, discriminators, sim data)
 
-How to set an experiment up so its result is *interpretable*, not just run it. (Per-experiment one-variable isolation lives in Training Mode Workflow → Phase 4; these are the design moves that make a single result *mean* something.)
+How to set an experiment up so its result is *interpretable*, not just run it. (Per-experiment one-variable isolation lives in `modes/train.md` → Phase 4; these are the design moves that make a single result *mean* something.)
 
 ### Build the discriminating instrument before you read a two-way result
 
@@ -329,114 +329,9 @@ Before writing any training code, answer these questions:
 
 ---
 
-## Training Mode Workflow
+## Training & Experiment Loop
 
-This workflow applies when the dev skill enters **Train mode**. It replaces Build mode's test→implement→verify loop with an experiment loop suited to ML's iterative nature.
-
-### Phase 1: Define Convergence Criteria
-
-Before any training, define what "done" looks like in measurable terms:
-
-```markdown
-## Convergence Criteria
-- Primary: [metric] [operator] [threshold] (e.g., mean_f1 > 0.85)
-- Secondary: [metric] [operator] [threshold] (e.g., inference latency < 10ms)
-- Stop condition: [when to stop iterating] (e.g., 3 consecutive experiments with <1% improvement)
-```
-
-If you can't define convergence criteria, you're not ready to train — go to Design mode first.
-
-### Phase 2: Validate Data
-
-Before spending compute, verify the data is sound:
-
-- [ ] Class distribution — are classes balanced? If not, enable class weights
-- [ ] Label quality — sample 20-50 items and manually verify labels
-- [ ] Label schema — mutual exclusivity test passed, no "unknown" class trap
-- [ ] Train/val/test splits — no data leakage between splits
-- [ ] Data pipeline — does loading, augmentation, preprocessing produce expected output?
-- [ ] Edge cases — what does the model see for ambiguous/hard examples?
-
-If data pipeline engineering is needed (ingestion, cleaning, transformation), switch to **Build mode** for that work, then return to Train mode.
-
-### Phase 3: Baseline
-
-Establish a baseline with minimal configuration:
-- Pretrained model, default hyperparameters, no augmentation
-- Record all metrics in experiment log
-- This is experiment #1 — every future experiment is measured against it
-
-### Phase 4: Experiment Loop
-
-```
-Read experiment-log.md → Change ONE variable → Train → Evaluate → Record → Decide
-```
-
-**Rules:**
-1. **One variable per experiment** — changing lr AND augmentation AND architecture means you can't attribute the result
-2. **Read the log first** — always, every time, no exceptions. This survives context compression.
-3. **Record before deciding** — write the result before choosing the next experiment. Prevents confirmation bias.
-4. **Stop when criteria met OR diminishing returns** — don't chase the last 0.1% unless the business requires it
-
-**Typical experiment order** (high-to-low impact):
-1. Architecture / model selection
-2. Data augmentation strategy
-3. Learning rate and schedule
-4. Batch size
-5. Regularization (dropout, weight decay)
-6. Fine-grained hyperparameters
-
-### Phase 5: Evaluate & Handoff
-
-When convergence criteria are met:
-- Run final evaluation on held-out test set (not val set)
-- Profile inference performance (latency, throughput, memory)
-- Export model (see Deployment section above)
-- Record final results in experiment log
-
-**Handoff to Build mode** for: inference engine, API wrapper, deployment pipeline, monitoring.
-**Handoff to Analyze mode** for: "why do certain classes underperform?", error analysis, failure mode investigation.
-
----
-
-## Experiment Log (Long-Running ML Work)
-
-When running iterative training loops (overnight/multi-day), context compression will drop earlier attempts. Maintain an append-only experiment log so Claude doesn't retry failed approaches or lose track of the best result.
-
-**Create `experiment-log.md` in the project root** at the start of any ML training session. Append after every meaningful experiment.
-
-### Format
-
-```markdown
-# Experiment Log
-
-## Goal
-[One sentence: what we're optimizing for]
-
-## Current Best
-| Metric | Value | Config | Checkpoint |
-|--------|-------|--------|------------|
-| [e.g. mean_f1] | [value] | [key hyperparams] | [path/epoch] |
-
-## Log
-
-### Exp [N] — [timestamp]
-- **Changed:** [what was different from previous]
-- **Result:** [metrics]
-- **Verdict:** [better/worse/inconclusive — why]
-- **Next:** [what to try based on this result]
-```
-
-### Rules
-
-1. **Always read the log before starting a new experiment** — this is your memory across context compressions
-2. **Update "Current Best" immediately** when a new best is found
-3. **Record failures** — "tried X, got worse because Y" prevents retrying dead ends
-4. **Keep entries terse** — this file will be read many times, don't pad it
-
-This only applies to ML iteration loops. Dev builds (apps, pipelines) use the standard evidence pattern (test results + quality scans).
-
----
+The Train-mode workflow — convergence criteria → validate data → baseline → one-variable experiment loop → evaluate/handoff — and the append-only `experiment-log.md` spec live in **`modes/train.md`**, which owns them (with the proxy-vs-decisive gate, the discrimination floor, and negative-result discipline). They are not duplicated here. This file covers the pieces train.md leans on: problem reframing, label/architecture decisions, metrics, and experiment *design* (controls, discriminators, sim — above).
 
 ## The Meta-Principle
 
