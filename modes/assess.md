@@ -106,9 +106,10 @@ Analyze asks "what's wrong with the *results*?" vs Assess which asks "what's wro
 
 1. **Root Cause Taxonomy** — Categorize failure modes. What types of errors exist? What's their distribution?
 2. **Causal Model** — Map cause → effect chains. What produces each failure type?
-3. **Impact/Effort Ranking** — For each root cause: how much would fixing it improve results vs how hard is the fix?
-4. **Experiment Design** — Define specific changes to test, with before/after measurement criteria
-5. **Projected Impact Matrix** — Expected improvement per intervention, ordered by cumulative gain
+3. **Stress-test before ranking** — Hold 2–3 competing causal frames, not one. For the lead frame ask: what would I see if this *were* the cause — and what would I see if it weren't? Go find the disconfirming log/query/metric. Classify each anomaly: *dismissible* (explained within the frame), *concerning* (real tension), *frame-breaking* (forces a new cause). Name the tripwire that would reopen the analysis before you commit. The coding-trained default is to anchor on the first plausible cause and confirm it — resist it.
+4. **Impact/Effort Ranking** — For each root cause: how much would fixing it improve results vs how hard is the fix?
+5. **Experiment Design** — Define specific changes to test, with before/after measurement criteria
+6. **Projected Impact Matrix** — Expected improvement per intervention, ordered by cumulative gain
 
 ## Output
 
