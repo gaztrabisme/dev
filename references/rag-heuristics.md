@@ -85,6 +85,21 @@ Read `ml-heuristics.md` → Eval-Set Validity and Proxy vs. Decisive Metric firs
 - **Primary metrics:** NDCG@10 (rewards ranking positives high), Recall@10 (did we retrieve it at all), MRR (rank of first hit). Score at **parent granularity** if that's what you return.
 - **Recall@50 ceiling (fusion only, no rerank) is a diagnostic lever-splitter.** The gap between the ceiling and delivered NDCG separates *"never retrieved"* (an embedding/recall problem — the lever enrichment/chunking targets) from *"retrieved but reranked out"* (a reranker problem). Knowing which lever a miss belongs to stops you tuning the wrong stage.
 - **Keep two sets:** a hard (vocab-gap) set that is *the gate*, and an easy (chunk-vocab) set as a *regression guard* so a recall win doesn't quietly break the already-solved case.
+- **Diversify query archetypes and report per stratum.** A set that's 88% why/how questions hides whole failure modes — when navigational/keyword/error-symbol archetypes were added to one corpus, navigational queries turned out to be the genuine weak spot (NDCG 0.76), invisible to the old set. Mix archetypes deliberately and break the score down by stratum, not just the aggregate. If an LLM judges relevance, validate the judge against human labels first (e.g. ±1 agreement, P/R) — an unvalidated judge is another unresolved instrument.
+
+---
+
+## Frontier (2026): adopt the consensus, distrust the add-ons
+
+The 2026 production consensus is boring and cheap: **hybrid dense+BM25 → cross-encoder rerank, no LLM in the query path**, routing to anything heavier only for the queries that need it. The frontier mostly *confirms* that foundation and supplies measured negatives worth not re-litigating.
+
+- **The cost dichotomy is the load-bearing lens.** Sort every technique into *per-query-LLM* (agentic loops, GraphRAG global search, RL-trained retrievers like Search-R1) vs *index-time / no-LLM-in-query-path* (hybrid+rerank, HippoRAG 2, LightRAG). Default to the second; reserve per-query-LLM for multi-hop / ambiguous / high-stakes.
+- **Enrichment regresses on jargon/extractive corpora** (ConTEB, "Context is Gold"). Prepended LLM prose dilutes rare exact-term signal — worst for BM25 (COVID-QA −21 nDCG@10). Confirms "enrichment is an experiment, never a default," and names *when* it loses: technical/identifier-heavy corpora.
+- **Late chunking** (embed whole doc, mean-pool per-chunk spans) buys context without per-chunk LLM or jargon dilution — but **lost measurably on a jargon corpus** (Δ−0.016, paired p=0.045) and **requires a mean-pooling embedder**. The strongest small open embedders (Qwen3-Embedding, Jina v5) are *last-token pooled* → "best embedder" and "late chunking" are mutually exclusive today. Pick per corpus; gate it.
+- **Long context doesn't kill RAG for static corpora** (Chroma "Context Rot," 18 models): accuracy degrades with input length *even below the window limit* — a focused ~300-token excerpt beats stuffing 113K tokens. Retrieve-then-focus still wins.
+- **You don't need RL retrieval** (FrugalRAG): a plain ReAct agent matches RL-trained Search-R1 on multi-hop. If your consumer is an agent, let *it* generate HyDE/multi-query (see Hybrid retrieval) — "agentic RAG" at zero server-side per-query-LLM cost; don't train a retriever.
+- **Multi-hop, only if you actually have it:** HippoRAG 2 is the cheap graph option *when a query pattern demands multi-hop*; full GraphRAG is over-engineering for fact lookup.
+- **MTEB rank ≠ your-corpus performance.** Top-MTEB embedders (Qwen3, Gemma) both lost to an incumbent (Jina v5) on the actual corpus. Re-rank embedders on *your* eval set, never on the leaderboard.
 
 ---
 
