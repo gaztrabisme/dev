@@ -158,6 +158,16 @@ You will iterate on a **cheap proxy** (small pool, held-out slice, mini-harness)
 
 A small in-memory retrieval pool once ranked an enrichment prompt as a +0.006 winner; the pre-registered full-index gate showed it actually *regressed* retrieval and it was reverted. The cheap metric gave a false positive — the gate, reserved as decisive in advance, was the only thing that caught it.
 
+### The Instrument Must Resolve the Delta (discrimination floor)
+
+A decisive gate only *decides* if it can see the difference you're asking it to judge. An eval can be valid — right construct, real pipeline — and still be a proxy *for this decision* when the delta is below its resolution. The trap: a gate that can't resolve the delta still emits a number, and that number launders a coin-flip into a verdict.
+
+- **Significance-test deltas; don't read aggregates raw.** Before accepting "A beats B," check the margin against the metric's own noise — a paired test (p<0.05) on per-query/per-sample scores, or the CI half-width. A gap smaller than the instrument's resolution is **inconclusive, not a result**; report it as such, don't crown a winner.
+- **Confirm resolution *before* you gate.** Know the gate's minimum detectable effect (run-to-run variance, validation-grid coarseness, sample size) up front. If the delta you expect is below it, the experiment can't answer the question — make the instrument finer (more queries, denser grid, paired design) before spending the run.
+- **A number that moved is not a win until you know *why* it moved.** A surprising improvement is a hypothesis about a mechanism; until you can name the mechanism, suspect a bug, a coarse grid, or an artifact first.
+
+> **Trace (knowledge-base gate-audit):** an embedding upgrade was rejected on a 0.012 NDCG gap that sat **3.6× below the gate's CI half-width (±0.043)** and below the paired MDE at every correlation level — and was never significance-tested. A later paired re-test downgraded the call to *inconclusive* and showed the single-label gate had *inflated* the deficit. The instrument was sound for ranking but could not adjudicate a sub-0.02 delta, yet was used to. the robotics project hit the same trap from the other side: a geometry-optimizer "14.2°→0°" win was a coarse-validation-grid artifact that vanished on a dense grid — the number moved for the wrong reason.
+
 ### Eval-Set Validity (the "measure-the-wrong-thing" trap)
 
 Before you trust *any* number, ask: **"Does this benchmark actually measure the lever I'm pulling?"** A metric that can't move when your change works is worse than no metric — it manufactures false confidence.
@@ -168,6 +178,34 @@ Before you trust *any* number, ask: **"Does this benchmark actually measure the 
 - **Match the granularity you actually deliver.** Score at the unit the consumer receives (e.g., parent chunk), not an internal unit, or the number won't reflect delivered quality.
 
 > **Trace (knowledge-base):** the first golden set scored NDCG 0.93 / Recall@50 1.00 — looked excellent, but was generated from the chunks, so it couldn't measure the recall lever enrichment was meant to pull. A paraphrase pass dropped query↔chunk overlap 52% (0.649→0.313) and exposed real headroom (NDCG 0.79). The same trap recurred one level down in the optimizer's distractor pool.
+
+---
+
+## Experiment Design (controls, discriminators, sim data)
+
+How to set an experiment up so its result is *interpretable*, not just run it. (Per-experiment one-variable isolation lives in Training Mode Workflow → Phase 4; these are the design moves that make a single result *mean* something.)
+
+### Build the discriminating instrument before you read a two-way result
+
+When an experiment can fail two ways — the *thing you're testing* failed, OR the *measurement around it* failed — build the cheap control that tells them apart **before** you read the headline number. Otherwise a FAIL is uninterpretable and you'll mis-attribute it.
+
+- The classic pair: a result is bad because the *signal* is insufficient vs. bad because the *model* couldn't use it. Add a non-learned oracle (a centroid/averaging decoder, a hand-rule) that answers "are the features even sufficient?" — now a learned-model FAIL can't hide behind "maybe the inputs were bad." One-variable isolation tells you *which input* broke; the discriminator tells you *which layer* broke. You want both.
+
+> **Trace (the robotics project):** a spatial-binding probe could fail because the direction features were too noisy *or* because attention couldn't bind instruction→direction. A non-attention oracle, built first, isolated it — the FAIL was diagnosable instead of ambiguous.
+
+### Calibrate the control to a *correct* system, not to an intuitive number
+
+A null/control is only useful if it's pinned to what a *correct* model would actually do. A plausible-sounding number is often the score of a *wrong* model — pin to it and the control becomes a false-negative generator.
+
+- Example: "ablate the signal → accuracy should fall to 1/N" sounds right, but a model that still slot-picks scores 1/N; a *genuinely* signal-free model decays to the **global prior (1/B over all classes)**. Pinning the wrong expected value hides a real failure.
+
+### Sim / finite-data has its own overfitting mode
+
+Synthetic or finite-bank data lets a model memorize *per-realization noise* instead of the task — and the usual instincts misfire:
+
+- **First diagnostic is train-realization vs fresh-realization eval**, not train/val loss. Tell: high accuracy on *seen* realizations, much lower on *fresh* draws from the same generator (e.g. 0.99 vs 0.72) → memorizing the bank, not learning the task.
+- **The fix is more realizations (K↑), not regularization.** A tiny model at few steps is *under*-fitting capacity-wise; adding dropout to a model that's memorizing a too-small bank makes it worse. Grow the data the generator produces for free before reaching for weight decay.
+- **An averaging/centroid oracle is a *low-variance ceiling*, not proof of impossibility.** "Trained model < averaging oracle" is usually estimator variance + finite data, not "the task can't be learned." Report a single-snapshot decoder as the fair comparator; don't declare a task impossible against a low-variance baseline.
 
 ---
 

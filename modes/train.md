@@ -29,6 +29,7 @@ Most experiments are scored on a **cheap proxy** (a small in-memory pool, a held
 - **Pre-register the ship threshold before you see the decisive result.** Write down "ships only if [decisive metric] beats [recorded baseline]" *before* running it. Deciding the bar after seeing the number is how confirmation bias launders a regression into a ship.
 - **Margins inside the proxy's noise floor are not wins.** If candidate A beats B by less than the proxy's run-to-run variance, the proxy can rank direction but cannot confirm the magnitude — defer to the decisive gate.
 - **A proxy that scores near-ceiling is measuring the wrong thing** (see Phase 2 — eval-set validity). It can no longer discriminate; fix the proxy before trusting it.
+- **The decisive gate must resolve the delta too.** Even the full-scale eval is a proxy *for the ship decision* if it can't see the margin: significance-test the decisive result (paired, p<0.05) and confirm the gap exceeds its CI half-width before you ship or reject — a sub-resolution gap is *inconclusive*, not a verdict. See `ml-heuristics.md` → The Instrument Must Resolve the Delta.
 
 > **Trace that earned this (knowledge-base project):** an 800-chunk in-memory pool ranked a "problem-symptom" enrichment prompt as the winner (+0.006, inside the noise floor). The pre-registered decisive gate — enrich all 48K chunks, re-index, re-eval — showed a **regression** (NDCG 0.7907→0.7759). The whole direction was reverted. The cheap proxy gave a false positive; only the pre-registered full gate caught it.
 
