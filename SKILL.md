@@ -115,6 +115,28 @@ Do not wait for the user to say "/dev" — match on intent.
 
 ---
 
+## Pattern Gate
+
+Detecting the mode tells you *what* you're doing; the Pattern Gate makes you choose *how* before you start — out loud, in one line. It exists because the default failure is silent: the coordinator quietly does everything inline and never even considers fanning out, isolating a reviewer, or de-risking first. So, like the KB Grounding Gate, it is a **mandatory one-liner, not advice**.
+
+**Before substantive work in any mode, declare:**  `Pattern: <choice> — <one-line reason>`
+
+| Pattern | Use when |
+|---------|----------|
+| **coordinator-direct** | Stubs, wiring, config, renames, doc edits, splitting already-tested code, a single small file. Mechanical or unambiguous. |
+| **subagent chain** | Real logic that can be wrong (branching / math / I/O): test → implementation → verify → cold review, each a *separate* agent. |
+| **parallel fan-out / workflow** | Independent streams: multi-file audit, fan-out research, a sprint over N items. Run concurrently; coordinator merges. |
+| **intrinsic-artifact gate** | The output is mechanically checkable (compiles + asserts, schema-valid, watertight mesh) — the invariant *is* the gate; no review chain needed. |
+| **sim / probe-first** | An irreversible or expensive fork (hardware spend, long training run, schema lock-in): build the cheapest experiment that resolves the biggest uncertainty *first*. |
+| **research subagent(s)** | Unknowns surfaced — spawn focused research before committing to an approach. |
+
+- **The choice is declared, not defaulted.** `coordinator-direct` is a legitimate answer — but it must be *chosen against* the alternatives, not fallen into. If a task has independent parts, fan-out gets ruled out on purpose, not by omission.
+- **Trivial/conversational turns are exempt** — a one-line fix or a question needs no declaration.
+- **Mixing is fine** — declare the dominant pattern and name the seam ("subagent chain, with a sim/probe-first spike on the geometry fork").
+- Membership detail and orchestration mechanics live in `modes/build.md` (When to Use Subagents) and `references/subagent-briefs.md`.
+
+---
+
 ## Scripts
 
 All scripts output JSON summaries to stdout, full logs to files.
@@ -130,12 +152,10 @@ Options: `--log-dir DIR` for organized logs, `--runner RUNNER` to force test run
 
 ## Available Tools
 
-Context Hub and GitNexus are situational — reach for them when they fit. The **Knowledge Base is gated** (see Grounding Gate below), not optional, on KB-covered domains.
+The **Knowledge Base is gated** (see Grounding Gate below), not optional, on KB-covered domains. For everything else, read the code and the official docs directly — don't reach for a tool the project doesn't already rely on.
 
 | Tool | When | How |
 |------|------|-----|
-| **Context Hub** (`chub`) | Greenfield builds, unfamiliar libraries | `chub search "lib"` → `chub get <id>` |
-| **GitNexus** (MCP) | Existing codebases — blast radius, call flows, impact analysis | `context`, `impact`, `query`, `detect_changes` |
 | **Knowledge Base** (MCP) | ML, DB, security, distributed systems domain questions | `search("concept")`, `grep_books("exact term")`, `get_chapter(book, ch)` |
 
 ### Knowledge Base Grounding Gate

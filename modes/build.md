@@ -90,21 +90,7 @@ Before spawning the test subagent, run each success criterion through this litmu
 
 ### Codebase Understanding (Existing Projects)
 
-Use GitNexus MCP tools (if repo is indexed) before scoping:
-- `context <symbol>` — 360-degree view: callers, callees, process participation
-- `impact <symbol>` — Blast radius with depth grouping and confidence
-- `detect_changes` — Maps git diff to affected symbols/processes
-- `query <concept>` — Find execution flows for a concept end-to-end
-
-Skip GitNexus for: greenfield projects, small fixes where you can read the code directly, config/wiring tasks.
-
-### API Documentation (Greenfield / Unfamiliar Libraries)
-
-Use Context Hub before writing code with unfamiliar libraries:
-```bash
-chub search "fastapi"          # Find available docs
-chub get fastapi/package       # Fetch curated API reference
-```
+Before changing existing code, map its blast radius: `grep`/`rg` for every caller, importer, and test mock of the symbols you'll touch (see Signature-Change Protocol below). Read the call sites, don't guess them. For unfamiliar libraries, read the official docs / web search for the real signatures rather than inventing them.
 
 ### Signature-Change Protocol
 
@@ -131,7 +117,7 @@ Typed mocks (`MagicMock(spec=ActualClass)`, `Protocol`-based fixtures) fail loud
 | Parallel with other work | Subagent (background) |
 | Mechanical across many files | Structured edit pattern (see `references/subagent-briefs.md`) |
 
-Default: coordinator-direct unless there's a reason to delegate. Subagents cost context and coordination overhead — use them when the benefit (parallelism, isolation, specialization) exceeds the cost.
+**Declare the pattern, don't default into one** (SKILL.md → Pattern Gate). `coordinator-direct` is a legitimate *declared* choice for mechanical/unambiguous work — but when a task has independent parts or logic that can be wrong, rule out fan-out / a subagent chain *on purpose*, not by omission. Subagents cost context and coordination overhead; they earn it through parallelism, isolation, or independent-reviewer separation.
 
 ### Subagent Orchestration
 
