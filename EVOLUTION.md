@@ -142,3 +142,30 @@ Not modified (foundational): Integrity Constraints; Wu Wei filter *logic* (H5 ad
 - RAG builds cite the frontier consensus (hybrid+rerank, no LLM in query path) and the measured negatives: [after: ?]
 - New friction/regressions introduced: [after: ?]
 - Verdict: [keep/revert/refine — pending]
+
+---
+
+## Evolution 5 — 2026-06-30
+
+### Harvest scope
+- **Source: in-session friction + a deferred Evolution-4 pattern**, not a fresh project trace. Gary reported a recurring, *measured* friction — subagent/parallel patterns never auto-trigger; the coordinator defaults to doing everything inline, forcing manual "use appropriate subagent coordination" prompts. Plus a skill-size review ("we've added a lot — what to remove?") and a wiki-scaling concern (a client CV project's memory md grew to thousands of lines).
+- **Why now:** the orchestration friction is exactly the gap Evolution 4 *deferred* — the robotics project had crystallized an enumerated pattern-selection taxonomy into its AGENTS.md (candidate P5), logged but not applied. The friction confirms the deferral was wrong; this evolution ports it. (Same honesty bar as Evo 3: part friction-measured, part idea-ported.)
+
+### Patterns found
+1. **Execution patterns stay advisory → silent inline default** — Impact: H, Effort: L. The skill *described* orchestration but `build.md` licensed the bad default ("coordinator-direct unless there's a reason to delegate") and buried the guidance below mode-entry. Advisory prose loses to the model's act-directly prior; only a *mandatory gate* fires — the KB Grounding Gate is the proof (it stuck across two projects in the Evo-4 harvest).
+2. **Accumulated duplication after 4 evolutions** — Impact: M, Effort: L. `ml-heuristics.md` carried a ~100-line Training Mode Workflow + Experiment Log that `modes/train.md` now owns better (with the proxy/decisive gate + discrimination floor); `chub`/GitNexus sat prominently in the tool table but go unused.
+3. **Wiki growth is a read-cost problem, not a storage problem** — Impact: M, Effort: L. Append-only pages (a client CV project's thousand-line memory) only hurt because they're read wholesale; the protocol had no read-on-entry budget or compaction discipline — and Evo 2 had *added* writing pressure (Output Contract) with no counterweight.
+
+### Hypotheses applied
+1. **Pattern Gate** — `SKILL.md` (new "Pattern Gate": mandatory `Pattern: <choice> — <reason>` one-liner with an enumerated menu — coordinator-direct / subagent chain / parallel fan-out / intrinsic-artifact gate / sim-probe-first / research — modeled on the KB gate *because that mechanism is measured to fire*) + `modes/build.md` (reframed "Default: coordinator-direct" → "declare, don't default; rule out fan-out on purpose"). Ports Evo-4's deferred P5 (the robotics project's taxonomy). **Gate-only, no keyword** — eating the defer-until-measured rule; add a keyword only if it under-fires. (Pattern 1.)
+2. **Dedup** — `references/ml-heuristics.md` (collapsed Training Mode Workflow + Experiment Log → a pointer to `modes/train.md`, −~100 lines) + removed `chub`/GitNexus from `SKILL.md`, `modes/build.md`, `modes/design.md`, `modes/assess.md` (replaced with read-the-code/grep + official-docs fallbacks; Gary confirmed neither tool fires). (Pattern 2.)
+3. **Wiki compaction discipline** — `references/wiki-protocol.md` (read-on-entry budget: index + active-work + decisions only, grep the rest; compact current-state pages / append only journals; ~400-line size trigger in Lint; the `CLAUDE.md`/`AGENTS.md` bootstrap one-liner so re-init survives compaction — the robotics project's trick). Recorded *why not* an external memory tool (claude-mem/cass): dynamic per-turn injection busts prefix caching → token blowup; markdown read once stays cached. (Pattern 3.)
+
+Not modified (foundational): Integrity Constraints, Wu Wei filter core.
+
+### Validation results (fill after next 3–5 sessions across modes)
+- Substantive tasks open with a `Pattern:` line; fan-out / sim-first get chosen when they fit, *without* the user prompting for them: [after: ?]
+- No regressions from the dedup — `train.md` fully covers the ML workflow; zero dangling chub/GitNexus references: [after: ?]
+- Read-on-entry stays bounded; current-state pages compacted; `log.md` grows but isn't read wholesale: [after: ?]
+- Pattern Gate doesn't become ceremony on trivial tasks (coordinator-direct declared in one line; exemptions honored): [after: ?]
+- Verdict: [keep/revert/refine — pending]
