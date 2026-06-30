@@ -146,7 +146,7 @@ When entering a project for the first time or exploring a new area:
 
 On entry to any dev mode:
 
-1. **Read** `wiki/index.md` → `wiki/active-work.md`
+1. **Read** `wiki/index.md` → `wiki/active-work.md` (+ `decisions.md` when you're about to make a call). **Do not read `log.md` or topic pages wholesale — grep them on demand.** The read-on-entry set is what costs context *every* session; keep it to the current-state pages (see Compaction).
 2. **Brief the user** — Current status, last breadcrumbs, pending items
 3. **During work:**
    - Update `active-work.md` with findings, decisions, breadcrumbs
@@ -167,8 +167,20 @@ Check for:
 - **Orphan pages** — In index but never linked from other pages
 - **Missing pages** — Concepts referenced but lacking their own page
 - **Active-work decay** — Workstreams with no updates. Still active or done?
+- **Oversized pages** — Any read-on-entry page (`active-work.md`, `architecture.md`) past ~400 lines → compact it (see below).
 
 Output: list of findings, suggested actions. User approves which to fix.
+
+---
+
+## Compaction — the cost is what you read, not what you store
+
+A wiki that grows to thousands of lines (a sprawling `log.md`, a bloated `active-work.md`) is only a problem if you *read it wholesale every session*. The fix is discipline about the **read-on-entry set**, not a database or an external memory tool (those typically inject retrieved memory into the prompt each turn, which busts prefix caching and burns tokens — a plain markdown wiki read once at session start stays cached).
+
+- **Read-on-entry budget.** On entry, read only `index.md` + `active-work.md` (+ `decisions.md` when deciding). Everything else — `log.md`, topic pages — is **grep-on-demand**. A 2,000-line `log.md` costs nothing if you never read it in full.
+- **Compact current-state pages; append only journals.** `active-work.md` and `architecture.md` are *living* documents — rewrite and prune them, don't append. When a workstream finishes, collapse its section to a one-line `log.md` entry (+ a `decisions.md` entry if a choice was made) and **delete it from `active-work.md`**. The only page that grows unbounded is `log.md`, the one you don't read wholesale.
+- **Size trigger.** When a read-on-entry page passes ~400 lines, compact it: fold resolved detail into a terse summary, push specifics into a dated `log.md` archive or a topic page. Bloat in a read-on-entry page is a tax on every future session.
+- **Bootstrap so re-init survives.** Put a one-liner at the top of the project's `CLAUDE.md`/`AGENTS.md`: *"On entry: invoke the dev skill; read `wiki/index.md` + `wiki/active-work.md`."* This re-initializes the memory workflow on every fresh session or context compaction — without it, a compaction silently drops the wiki habit and the next turn works blind.
 
 ---
 
