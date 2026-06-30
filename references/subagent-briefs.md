@@ -222,9 +222,9 @@ Include quality scan JSON summary in report.
 
 ## Adversarial Review Subagent
 
-**When:** After verification passes. Final gate before delivery. **Medium/heavy builds only.** Skip for light (small fixes, config).
+**When:** After verification passes. Final gate before delivery. **Fire on the trigger, not the build size** (see `modes/build.md` Phase 5): a mistake that is hard-to-reverse, silent, or *green-for-the-wrong-reason*. Skip only when none holds (cheap-to-undo and loud-when-wrong), and say the skip out loud.
 
-**Why:** Implementation and verification subagents share similar context — they have correlated blind spots. The adversarial reviewer gets the code **cold**.
+**Why:** This is a gate *distinct* from verification, not a redundant one. Verification checks the code against the spec and inherits the spec's blind spots — it cannot catch a result that's right for the wrong reason (leakage, memorization, a measurement artifact). The adversarial reviewer gets the code **cold** and must not be its author or the author of its tests (correlated blind spots).
 
 **Spawn:** Agent tool with `subagent_type: general-purpose`
 
@@ -244,6 +244,11 @@ LOGIC REVIEW:
 - Do error handling paths actually handle the error or just swallow it?
 - Are there assumptions baked in that could break? (hardcoded values,
   implicit ordering, platform assumptions)
+- If anything here reports success — a passing test, a metric, a "PASS" —
+  could it be true for the WRONG reason? (a test that passes against a
+  stubbed/leaked value, an eval split that overlaps training, a metric a
+  trivial baseline would also score, a check satisfiable by a no-op). If
+  you can't tell from the code what makes it pass, say exactly that.
 
 ARCHITECTURE REVIEW:
 - Is anything over-engineered for what it does?

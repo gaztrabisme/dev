@@ -91,7 +91,7 @@ Read `references/subagent-briefs.md` for the spec adversarial review prompt temp
 - **ADVISORY findings** → note in handoff, build team is aware
 - If 3+ CRITICAL → spec needs another iteration, not patches
 
-**Run only when the trigger fires.** Adversarial review earns its cost when a mistake in the spec would be **hard to reverse** (schema/API/data-model commitments, public contracts, anything downstream code will build on) OR **silent** (a wrong assumption that ships green and surfaces as corruption/drift later, not as a failed test). If neither holds — bug fixes, config, wiring, anything cheap to undo and loud when wrong — skip it; a review here is theatre that trains the team to ignore reviews. When in doubt, ask: *if this spec is subtly wrong, do we find out in minutes or in production?* Minutes → skip. Production → review.
+**Run only when the trigger fires.** Adversarial review earns its cost when a mistake in the spec would be **hard to reverse** (schema/API/data-model commitments, public contracts, anything downstream code will build on), **silent** (a wrong assumption that ships green and surfaces as corruption/drift later, not as a failed test), OR **green-for-the-wrong-reason** (a success criterion a trivial or wrong implementation could also satisfy — measured by the wrong instrument, or trivially true). If none holds — bug fixes, config, wiring, anything cheap to undo and loud when wrong — skip it (and say so out loud); a review here is theatre that trains the team to ignore reviews. When in doubt, ask: *if this spec is subtly wrong, do we find out in minutes or in production?* Minutes → skip. Production → review.
 
 ---
 

@@ -172,13 +172,21 @@ Exception: if the user explicitly scopes the task to exclude test hygiene ("just
 
 ---
 
-## Phase 5: Adversarial Review (medium/heavy builds)
+## Phase 5: Adversarial Review
 
 A separate subagent reviews the code **cold** — no planning context, no contracts, no rationale. Reads the code like a new developer joining the project.
 
+**Run only when the trigger fires.** Cold review earns its cost when a mistake would be:
+- **hard to reverse** — schema/API/data-model commitments, public contracts, anything downstream builds on; or
+- **silent** — ships green and surfaces later as corruption/drift, not as a failed test; or
+- **green for the wrong reason** — a success metric or passing test that could be satisfied *without the system actually working*: data leakage, memorization, a label/grid/measurement artifact, a coincidental pass.
+
+The third case is why adversarial review is a gate **distinct from verification**, not a redundant one: a verifier checks the code against the spec and so *inherits the spec's blind spots* — it structurally cannot catch a result that's right for the wrong reason. Only a reviewer reading the artifact cold, with no spec to anchor on, catches "passes for the wrong reason." Skip only when none of the three holds (cheap-to-undo and loud-when-wrong) — and say so out loud (a silent skip is an integrity miss).
+
+**Keep it cold.** The reviewer gets the artifact **context-free** (file paths only — no spec, no rationale, no "why we chose X") and must **not** be the author of the code or of the tests being reviewed — author and reviewer share correlated blind spots. Test-author ≠ implementer ≠ reviewer.
+
 - **CRITICAL findings** → must fix before delivery
 - **3+ CRITICAL** → systemic problem, STOP and escalate to user
-- **Skip for**: light-weight tasks (small fixes, config, wiring)
 
 ---
 
