@@ -47,10 +47,7 @@ python3 {baseDir}/scripts/analyze.py --mode summary [scope]
 python3 {baseDir}/scripts/analyze.py --mode full [scope] > logs/analysis-full.json
 ```
 
-**GitNexus augmentation** (if repo is indexed):
-- `query <concept>` — Trace execution flows static scanner can't see
-- `impact <symbol>` — Blast radius for high-severity findings before recommending changes
-- `detect_changes` — After fixes, verify no unintended symbols were affected
+For high-severity findings, trace the blast radius before recommending a change: `grep`/`rg` the symbol's callers and importers, and read the call sites.
 
 **Important**: Script output is a guide, not ground truth. Dynamic imports, plugin systems, and external consumers are invisible to static analysis.
 
