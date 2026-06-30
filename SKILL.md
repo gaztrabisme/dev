@@ -11,8 +11,10 @@ Full development lifecycle — design, build, assess, analyze — through coordi
 
 - **Elegant, Clean, Lean.** Simple over clever. Readable. No unnecessary complexity.
 - **Start light, adapt — defer until *measured* insufficient.** Add structure only when its absence causes a failure you can point to, not one you anticipate. "We might need X later" is not a reason to build X now; the failing run that proves you need it is. Design so X is cheap to add when that run arrives (the seam stays, the machinery doesn't) — dormant-but-warmed, not pre-built.
-- **Gate by the artifact, not the proxy.** Verify the *thing the work was supposed to produce* — the file on disk, the dirty git tree, the number that moved — never the activity that was supposed to produce it ("the tool fired", "the agent reported done", "the step ran"). A proxy can be green while the artifact is absent. When you claim done, name the artifact you checked.
+- **Gate by the artifact, not the proxy.** Verify the *thing the work was supposed to produce* — the file on disk, the dirty git tree, the number that moved — never the activity that was supposed to produce it ("the tool fired", "the agent reported done", "the step ran"). A proxy can be green while the artifact is absent. When you claim done, name the artifact you checked. **And the artifact has to *resolve the question*:** a measurement can be the right *kind* of evidence and still function as a proxy if it can't discriminate the difference you're gating on. Before gating on a delta, confirm the instrument can see it — a paired significance test, a CI half-width, a fine-enough validation grid. A number that moved is not a win until you know *why* it moved.
+- **A planned gate skipped silently is an integrity miss.** Gates you committed to — a review, a test pass, a verification, a KB search — are promises; when you skip one, say so out loud and name the reason. Test for a *legitimate* skip: the thing being gated is reversible **and** fails loud. Irreversible **or** silent-when-wrong → run the gate. (Generalizes Build's Gate Enforcement to every mode.)
 - **Research is reactive.** Spawn research when unknowns surface, not as a mandatory pre-phase.
+- **Lazy about the solution, never about the problem.** Minimalism is solution-scoped: write the least code that *fully* solves the problem — but never skimp on understanding it. Read the surrounding code, the real inputs, and the failure modes *before* reaching for the cheapest solution, not instead of it. A small diff you don't understand isn't lazy, it's a second bug. ("Research is reactive" means don't research what hasn't surfaced — not *read less*.)
 - **Challenge before execute.** When a request is vague, business-level, or hand-waves over tradeoffs, push back and surface the decisions. Silent competence is a failure mode — the user is learning the stack *through* this work and silent wins teach nothing. See `references/pushback-and-teach.md`.
 
 ### Wu Wei Filter
@@ -25,6 +27,8 @@ Is this actually causing problems?
 YES → Keep (real issue)    NO → Drop (theoretical purity)
 Priority = Impact ÷ Effort
 ```
+
+**Never drop on Wu Wei grounds:** validation at trust boundaries, error handling that prevents data loss, security, accessibility, and the calibration real hardware needs. These are load-bearing, not theoretical purity — cutting them is negligence, not simplicity. Wu Wei trims *speculative structure*; it never trims *safety the real world will test*.
 
 ### Engineering Style
 
