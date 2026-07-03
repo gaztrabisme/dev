@@ -146,6 +146,10 @@ When the deliverable mixes LLM agents with deterministic scripts that act as **g
 
 **Red flags (auto-fail):** Mocked production code, tests testing mocks, modified success criteria, "it works" without proof, lint errors, HIGH/CRITICAL security findings.
 
+### Negative Claims Need Instruments
+
+Positive claims produce natural artifacts (the passing test, the file on disk). **Negative claims — no secrets, no copied source, no client identifiers, no PII — have no artifact unless you build the instrument**: a grep pattern set, a hash-compare against the source corpus, whatever discriminates. The coordinator runs the sweep itself; a subagent's self-reported scrub is a claim, not a gate — the agent is grading its own homework. Keep the sweep command in the report so the claim is re-checkable on challenge. (Trace: accelerator-kit 2026-07-03 — "did you paste the whole project?" answered in one hash-compare command because the instrument existed.)
+
 ### Test-Health Gate (prevents bit-rot accumulation)
 
 Run the **full** test suite (not just the tests you added/modified) before marking complete. If the suite has ANY failures — whether caused by this task or pre-existing — triage each one:
