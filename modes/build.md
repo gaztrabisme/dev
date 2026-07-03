@@ -140,6 +140,10 @@ Read `references/subagent-briefs.md` for exact prompt templates. When briefing s
 
 Verification subagent covers: tests pass, code quality scan (ruff + bandit + pyright via `run-quality.sh`), contracts met, no mocked production code, ai-slop-detector, success criteria evidence.
 
+### Gate-Script Smoke Test (when the build ships its own gates)
+
+When the deliverable mixes LLM agents with deterministic scripts that act as **gates or scaffolding** (validators, stage checks, instantiators), exercise the scripts' failure paths before trusting them: missing input, malformed input, stale input, empty input — each must fail loud with the documented output shape. The scripts get less scrutiny than the prompts but carry the integrity load; a gate that opens on garbage is worse than no gate, because it converts "unverified" into "falsely verified". (Trace: accelerator-kit 2026-07-03 — the stage gate passed with a missing service due to an untested parse path, while the agent markdown survived cold review untouched.)
+
 **Red flags (auto-fail):** Mocked production code, tests testing mocks, modified success criteria, "it works" without proof, lint errors, HIGH/CRITICAL security findings.
 
 ### Test-Health Gate (prevents bit-rot accumulation)
