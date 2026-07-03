@@ -50,7 +50,7 @@ See `references/subagent-briefs.md` → Mechanical Edit Pattern.
 
 **Token budget:** ~1K per file (read + edit). 20 files = ~20K tokens, not 100K+.
 
-**Teach the pattern once.** Before fanning out, emit a short tagged block (`**Pattern:**`) explaining what the mechanical change *is*, why this codebase has it, and what would break with the naive alternative. One concept, 3–5 sentences. Per `references/pushback-and-teach.md` — the user should absorb the pattern, not just watch 40 files change.
+**Teach the pattern once.** Before fanning out, emit a short tagged block (`**Pattern:**`) explaining what the mechanical change *is*, why this codebase has it, and what would break with the naive alternative. One concept, 3–5 sentences. Per `../core/references/pushback-and-teach.md` — the user should absorb the pattern, not just watch 40 files change.
 
 ### Surgical Items
 
@@ -110,4 +110,4 @@ Use TaskCreate/TaskUpdate to track items. Each item gets a task with:
 
 Report progress at natural milestones (wave completion), not after every edit.
 
-**Output contract:** the sprint isn't done until `wiki/log.md` has a batch summary and `active-work.md` reconciles every item (done / deferred / blocked). See `references/wiki-protocol.md` → Output Contract.
+**Output contract:** the sprint isn't done until `wiki/log.md` has a batch summary and `active-work.md` reconciles every item (done / deferred / blocked). See `../core/references/wiki-protocol.md` → Output Contract.

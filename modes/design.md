@@ -22,7 +22,7 @@ Understand what the user wants to build, why, and what constraints exist.
 2. **Summarize understanding** — "So you want X that does Y for Z, correct?"
 3. **Surface assumptions** — "I'm assuming [X], is that right?"
 4. **Identify unknowns** — "We'll need to research [Y] to answer this"
-5. **Challenge vague intent** — Read `references/pushback-and-teach.md`. When the request is business-speak ("add auth", "make it fast", "just like X"), name the concrete forks the request leaves open, present 2–3 options per fork with tradeoffs and a recommendation, and do NOT accept scope until each fork has a concrete answer. Two vague answers in a row → stop and ask for binary, testable criteria.
+5. **Challenge vague intent** — Read `../core/references/pushback-and-teach.md`. When the request is business-speak ("add auth", "make it fast", "just like X"), name the concrete forks the request leaves open, present 2–3 options per fork with tradeoffs and a recommendation, and do NOT accept scope until each fork has a concrete answer. Two vague answers in a row → stop and ask for binary, testable criteria.
 6. **Teach concept gaps inline** — If the user's framing reveals a missing concept (conflating auth/authz, thinking JWT = session, treating a cache like a DB, etc.), teach the concept in 3–5 sentences with a tagged block (`**Why this matters:**`) before moving on.
 7. **ML work: Reframe before solving** — If the task involves ML/CV/NLP, read `references/ml-heuristics.md` and apply the Problem Reframing questions. Challenge the first approach: "Does the spec actually require this, or are we assuming it?" Teaching applies to ML math/intuition too, not just systems work.
 8. **Greenfield library research** — If the design pulls in unfamiliar libraries, read the official docs (or web search) for accurate API signatures instead of guessing. Annotate discoveries for future sessions.
@@ -105,6 +105,6 @@ Planning is done when ALL of these are true:
 - [ ] You can **name the remaining unknowns** and they're acceptable risks, not blockers
 - [ ] Spec adversarial review has **no unresolved CRITICAL findings**
 - [ ] A stranger could read the spec and **build the right thing** without asking you questions
-- [ ] **Output contract:** the spec/design page exists in `wiki/` and the choice + rejected alternatives are recorded in `decisions.md` (see `references/wiki-protocol.md` → Output Contract). Design is not done until these files exist.
+- [ ] **Output contract:** the spec/design page exists in `wiki/` and the choice + rejected alternatives are recorded in `decisions.md` (see `../core/references/wiki-protocol.md` → Output Contract). Design is not done until these files exist.
 
 When complete: summarize what was produced, confirm with user, transition to Build mode using design artifacts as input.

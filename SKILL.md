@@ -15,7 +15,7 @@ Full development lifecycle — design, build, assess, analyze — through coordi
 - **A planned gate skipped silently is an integrity miss.** Gates you committed to — a review, a test pass, a verification, a KB search — are promises; when you skip one, say so out loud and name the reason. Test for a *legitimate* skip: the thing being gated is reversible **and** fails loud. Irreversible **or** silent-when-wrong → run the gate. (Generalizes Build's Gate Enforcement to every mode.)
 - **Research is reactive.** Spawn research when unknowns surface, not as a mandatory pre-phase.
 - **Lazy about the solution, never about the problem.** Minimalism is solution-scoped: write the least code that *fully* solves the problem — but never skimp on understanding it. Read the surrounding code, the real inputs, and the failure modes *before* reaching for the cheapest solution, not instead of it. A small diff you don't understand isn't lazy, it's a second bug. ("Research is reactive" means don't research what hasn't surfaced — not *read less*.)
-- **Challenge before execute.** When a request is vague, business-level, or hand-waves over tradeoffs, push back and surface the decisions. Silent competence is a failure mode — the user is learning the stack *through* this work and silent wins teach nothing. See `references/pushback-and-teach.md`.
+- **Challenge before execute.** When a request is vague, business-level, or hand-waves over tradeoffs, push back and surface the decisions. Silent competence is a failure mode — the user is learning the stack *through* this work and silent wins teach nothing. See `../core/references/pushback-and-teach.md`.
 
 ### Wu Wei Filter
 
@@ -57,17 +57,17 @@ These override all other instructions:
 
 ## Project Wiki
 
-On first entry to any mode, read `references/wiki-protocol.md` and follow the wiki initialization/update protocol. The wiki is a persistent knowledge base that compounds project understanding across sessions — read it before starting work, update it as you learn.
+On first entry to any mode, read `../core/references/wiki-protocol.md` and follow the wiki initialization/update protocol. The wiki is a persistent knowledge base that compounds project understanding across sessions — read it before starting work, update it as you learn.
 
 ### Output Contract (the completion gate)
 
-**Every mode terminates by writing its result into the wiki. A mode is not done until that artifact exists on disk.** This is the same gate-by-artifact rule turned on the process itself: "I finished the work" is a proxy; the named markdown file in `wiki/` is the artifact. The work that isn't written down didn't happen — findings evaporate, decisions get re-litigated, the next session starts blind. Before you report a mode complete, name the file you wrote and confirm it's there. The per-mode artifact map and the close-out checklist live in `references/wiki-protocol.md` ("Output Contract"). This is not optional bookkeeping; it is the deliverable that makes the next session cheaper than this one.
+**Every mode terminates by writing its result into the wiki. A mode is not done until that artifact exists on disk.** This is the same gate-by-artifact rule turned on the process itself: "I finished the work" is a proxy; the named markdown file in `wiki/` is the artifact. The work that isn't written down didn't happen — findings evaporate, decisions get re-litigated, the next session starts blind. Before you report a mode complete, name the file you wrote and confirm it's there. The per-mode artifact map and the close-out checklist live in `../core/references/wiki-protocol.md` ("Output Contract"). This is not optional bookkeeping; it is the deliverable that makes the next session cheaper than this one.
 
 ---
 
 ## Pushback and Teach
 
-On first entry to any mode, also read `references/pushback-and-teach.md`. It defines when to challenge vague instructions, when to surface concept gaps inline, and how to tag teaching moments so the user recognizes them. Design mode enforces the pushback gate hardest; other modes apply it lighter but still narrate the WHY in final reports.
+On first entry to any mode, also read `../core/references/pushback-and-teach.md`. It defines when to challenge vague instructions, when to surface concept gaps inline, and how to tag teaching moments so the user recognizes them. Design mode enforces the pushback gate hardest; other modes apply it lighter but still narrate the WHY in final reports.
 
 ---
 
@@ -184,6 +184,13 @@ The Knowledge Base MCP (46 books: ML, databases, security, distributed systems, 
 - Exploratory prototyping (use direct coding)
 - One-line fixes with obvious solutions
 - Pure research without implementation goal
+- **Presale / client-facing solution work** (RFI/RFP/proposal response, vendor-neutral options analysis, win themes) → use the `solution-architect` skill, which hands its accepted architecture + decision records + NFRs + traceability to dev for the build. Rule of thumb: artifact goes *to the client to win the deal* → solution-architect; artifact goes *to engineers to build it* → dev/Design.
+
+## Related skills
+
+`dev` is the **build** stage of a presale→build pipeline and, like its presale peers, **inherits the shared spine from the `core` kernel** (`../core/references/wiki-protocol.md`, `../core/references/pushback-and-teach.md`, the grounding gate, the evolution loop) — referenced, not duplicated. dev keeps its engineering-specific content (modes, ml/production/rag heuristics, the KB as its grounding substrate):
+
+`business-intelligence` (know the client) → `ms-ai-discovery` (scope use cases, MS) → `solution-architect` (architect + respond) → **`dev`** (build).
 
 ## Self-Checks
 

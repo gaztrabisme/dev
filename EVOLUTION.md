@@ -23,7 +23,7 @@ Periodic retrospectives that turn real project traces into skill improvements. S
 1. **H1: Proxy-vs-decisive metric gate** — `modes/train.md` (Phase 1 + Phase 4), `references/ml-heuristics.md` (Metrics) — applied (commit a712a87). Folds in pattern #5.
 2. **H2: Eval-set validity trap** — `references/ml-heuristics.md` (Metrics), `modes/train.md` (Phase 2) — applied (commit f903d9e).
 3. **H3: rag-heuristics.md reference** — new `references/rag-heuristics.md`, `SKILL.md`, `modes/build.md` — applied (commit 65df1d9).
-4. **H4: Negative-result discipline** — `modes/train.md` (Phase 5), `references/wiki-protocol.md` — applied (commit bbc24f2). Folds in pattern #6.
+4. **H4: Negative-result discipline** — `modes/train.md` (Phase 5), `../core/references/wiki-protocol.md` — applied (commit bbc24f2). Folds in pattern #6.
 5. **H5: Knowledge Base Grounding Gate** — `SKILL.md` (canonical gate), `modes/design.md`, `modes/train.md`, `modes/build.md`, `references/subagent-briefs.md` (33→46 staleness fix) — applied. Surfaced by a follow-up architectural question, not the harvest: the KB MCP (the corpus this whole project exists to provide) was discoverable but **not integral** — "use situationally" + "research is reactive" + no mode-level gate kept it optional. The gate fires only on KB-covered domains, requires one search + a one-line cite-or-null in Key Decisions, and is skippable by stating the domain isn't covered. Integral where relevant, zero ceremony elsewhere.
 
 Not modified (foundational): Integrity Constraints, Wu Wei filter.
@@ -64,7 +64,7 @@ Not modified (foundational): Integrity Constraints, Wu Wei filter.
 3. **② Defer-until-measured + adopt-design-not-system** — `SKILL.md` Principles ("Start light, adapt" rewritten) + Engineering Style #7 — applied. (Patterns #2, #3.)
 4. **③ Signal integrity** — `references/production-thinking.md` (Operational Failure Modes, forcing Q5) + `references/ml-heuristics.md` (Metrics, "Decompose Composite Metrics") — applied. (Patterns #5, #6.)
 5. **④ Multi-agent & test hygiene** — `references/subagent-briefs.md` (global isolation constraint + Test Subagent "force the failure") + `modes/build.md` (worker VCS hygiene) — applied. (Patterns #7, #8.)
-6. **⑤ Enforced output contract** — `SKILL.md` (Output Contract gate) + `references/wiki-protocol.md` (per-mode artifact map + close-out checklist) + light close-out gate in all six modes (`design`/`build`/`sprint`/`assess`+`analyze`/`train`/`evolve`) — applied. (Pattern #9.)
+6. **⑤ Enforced output contract** — `SKILL.md` (Output Contract gate) + `../core/references/wiki-protocol.md` (per-mode artifact map + close-out checklist) + light close-out gate in all six modes (`design`/`build`/`sprint`/`assess`+`analyze`/`train`/`evolve`) — applied. (Pattern #9.)
 
 Dropped on Wu Wei (skip is visible): migrate-first DB primitive (schema-specific, below skill altitude) and path-confinement security mechanics (harness-runtime, not instruction-altitude).
 
@@ -159,7 +159,7 @@ Not modified (foundational): Integrity Constraints; Wu Wei filter *logic* (H5 ad
 ### Hypotheses applied
 1. **Pattern Gate** — `SKILL.md` (new "Pattern Gate": mandatory `Pattern: <choice> — <reason>` one-liner with an enumerated menu — coordinator-direct / subagent chain / parallel fan-out / intrinsic-artifact gate / sim-probe-first / research — modeled on the KB gate *because that mechanism is measured to fire*) + `modes/build.md` (reframed "Default: coordinator-direct" → "declare, don't default; rule out fan-out on purpose"). Ports Evo-4's deferred P5 (the robotics project's taxonomy). **Gate-only, no keyword** — eating the defer-until-measured rule; add a keyword only if it under-fires. (Pattern 1.)
 2. **Dedup** — `references/ml-heuristics.md` (collapsed Training Mode Workflow + Experiment Log → a pointer to `modes/train.md`, −~100 lines) + removed `chub`/GitNexus from `SKILL.md`, `modes/build.md`, `modes/design.md`, `modes/assess.md` (replaced with read-the-code/grep + official-docs fallbacks; Gary confirmed neither tool fires). (Pattern 2.)
-3. **Wiki compaction discipline** — `references/wiki-protocol.md` (read-on-entry budget: index + active-work + decisions only, grep the rest; compact current-state pages / append only journals; ~400-line size trigger in Lint; the `CLAUDE.md`/`AGENTS.md` bootstrap one-liner so re-init survives compaction — the robotics project's trick). Recorded *why not* an external memory tool (claude-mem/cass): dynamic per-turn injection busts prefix caching → token blowup; markdown read once stays cached. (Pattern 3.)
+3. **Wiki compaction discipline** — `../core/references/wiki-protocol.md` (read-on-entry budget: index + active-work + decisions only, grep the rest; compact current-state pages / append only journals; ~400-line size trigger in Lint; the `CLAUDE.md`/`AGENTS.md` bootstrap one-liner so re-init survives compaction — the robotics project's trick). Recorded *why not* an external memory tool (claude-mem/cass): dynamic per-turn injection busts prefix caching → token blowup; markdown read once stays cached. (Pattern 3.)
 
 Not modified (foundational): Integrity Constraints, Wu Wei filter core.
 
@@ -169,3 +169,23 @@ Not modified (foundational): Integrity Constraints, Wu Wei filter core.
 - Read-on-entry stays bounded; current-state pages compacted; `log.md` grows but isn't read wholesale: [after: ?]
 - Pattern Gate doesn't become ceremony on trivial tasks (coordinator-direct declared in one line; exemptions honored): [after: ?]
 - Verdict: [keep/revert/refine — pending]
+
+---
+
+## Evolution 6 — 2026-07-01 — Migrate the shared spine to the `core` kernel
+
+### Harvest scope
+- **Source: a constellation-level refactor**, not a project trace. As the skill family grew (business-intelligence, solution-architect, ms-ai-discovery, skill-builder), all four reached into `../dev/references/` for *general* discipline — an oddness noted while building solution-architect. The general spine was extracted into a new `core` kernel; this entry records dev's own migration onto it.
+
+### Patterns found
+1. **General discipline was privileged inside `dev`** — Impact: M, Effort: M. `wiki-protocol.md` and `pushback-and-teach.md` are role-agnostic, but living in `dev` forced every non-dev skill to reference a *build* skill for non-build rules, and (once copied into `core`) created a two-copy drift risk.
+
+### Hypotheses applied
+1. **Repoint + retire** — deleted `dev/references/wiki-protocol.md` and `dev/references/pushback-and-teach.md`; repointed all 21 references (`SKILL.md`, `CLAUDE.md`, 6 modes, `subagent-briefs.md`, this log) to `../core/references/`. Reframed SKILL.md "Related skills" and CLAUDE.md structure notes: dev now **inherits** the spine from `core` (like its peers) and keeps only engineering-specific content (modes, ml/production/rag heuristics, the KB substrate). Single canonical home; drift risk closed.
+
+Not modified: everything dev-specific (modes, heuristics, integrity constraints, Pattern Gate, KB Grounding Gate). This is a *relocation of shared references*, not a behavior change — dev reads the same protocol text, now from `core`.
+
+### Validation results (fill after next 2–3 dev sessions)
+- Modes still resolve the wiki-protocol / pushback references (now under `../core/`) with no dangling links: [after: ?]
+- No behavior change from the relocation (same Output Contract, same pushback discipline): [after: ?]
+- Verdict: PENDING — mechanical relocation verified (grep clean, files present in core); needs a real dev session to confirm the references read naturally from their new home.

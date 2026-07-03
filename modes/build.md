@@ -58,7 +58,7 @@ When skipping TDD, state why. "Skipping TDD: deletion-only change, existing test
 
 **Test naming convention:** `test_<contract_clause>_<behavior>` (e.g., `test_api_get_users_returns_json_array`). When a test fails, the name tells you which requirement broke.
 
-**Before the approval gate:** If the task involves any non-obvious decisions (auth mechanism, DB schema shape, caching strategy, concurrency model, error-handling contract, etc.), surface them per `references/pushback-and-teach.md`. List the forks with 2–3 options each, recommend one with a one-line tradeoff, and get an explicit answer. Do NOT proceed with silent defaults.
+**Before the approval gate:** If the task involves any non-obvious decisions (auth mechanism, DB schema shape, caching strategy, concurrency model, error-handling contract, etc.), surface them per `../core/references/pushback-and-teach.md`. List the forks with 2–3 options each, recommend one with a one-line tradeoff, and get an explicit answer. Do NOT proceed with silent defaults.
 
 **STOP for user approval before building.**
 
@@ -72,7 +72,7 @@ Before spawning the test subagent, run each success criterion through this litmu
 | Does it name a specific input → output pair? | "Empty cart returns 200 with `{items: []}`" | "Handles edge cases" |
 | Would two engineers write the same test from it? | "Search with no results returns 200 + empty array" | "Search is fast" |
 
-**Any criterion that fails → pushback loop.** Apply `references/pushback-and-teach.md`: name the forks, present options, get a concrete answer. Two vague answers → stop and demand binary criteria before proceeding.
+**Any criterion that fails → pushback loop.** Apply `../core/references/pushback-and-teach.md`: name the forks, present options, get a concrete answer. Two vague answers → stop and demand binary criteria before proceeding.
 
 **Escape hatch:** User explicitly says "shallow tests are fine here" → document which criteria are vague and proceed. The test subagent will produce what it can; the gap is acknowledged, not hidden.
 
@@ -201,7 +201,7 @@ Match effort to task weight:
 
 Minimum: every success criterion either checked with evidence, deferred with reason, or marked N/A.
 
-**Output contract:** before reporting the build complete, append the outcome (with evidence pointer) to `wiki/log.md`, record any non-obvious choice in `decisions.md`, and file new failure patterns in `gotchas.md`. The build isn't done until that write exists — see `references/wiki-protocol.md` → Output Contract.
+**Output contract:** before reporting the build complete, append the outcome (with evidence pointer) to `wiki/log.md`, record any non-obvious choice in `decisions.md`, and file new failure patterns in `gotchas.md`. The build isn't done until that write exists — see `../core/references/wiki-protocol.md` → Output Contract.
 
 ---
 

@@ -2,7 +2,7 @@
 
 Iterative ML training loops — finetuning, architecture experiments, hyperparameter search. Unlike Build mode (test → implement → verify), Train mode follows an experiment loop where success is measured by metrics, not binary tests.
 
-Read `references/ml-heuristics.md` for problem reframing and architecture decision heuristics. Read `references/pushback-and-teach.md` — the teach directive applies to ML math too: when you introduce a loss function, activation, optimizer, or architecture choice, narrate the *mechanism* (what it computes, what it penalizes, why the shape is what it is), not just the API call.
+Read `references/ml-heuristics.md` for problem reframing and architecture decision heuristics. Read `../core/references/pushback-and-teach.md` — the teach directive applies to ML math too: when you introduce a loss function, activation, optimizer, or architecture choice, narrate the *mechanism* (what it computes, what it penalizes, why the shape is what it is), not just the API call.
 
 **Apply the Knowledge Base Grounding Gate (`SKILL.md`) before Phase 1.** ML is a KB-covered domain — search the corpus for the technique/architecture/metric you're about to use and record `KB: searched "<q>" → <finding|nothing relevant>` in the experiment log or Key Decisions. Ground the approach before spending compute.
 
@@ -95,7 +95,7 @@ When convergence criteria are met:
 **Handoff to Build mode** for: inference engine, API wrapper, deployment pipeline, monitoring.
 **Handoff to Analyze mode** for: "why do certain classes underperform?", error analysis, failure mode investigation.
 
-**Output contract:** the experiment isn't done until the `experiment-log.md` entry exists (config, metric vs. pre-registered baseline, verdict) and any direction-changing result is in `wiki/decisions.md`. A negative result is a required write, not an optional one. See `references/wiki-protocol.md` → Output Contract.
+**Output contract:** the experiment isn't done until the `experiment-log.md` entry exists (config, metric vs. pre-registered baseline, verdict) and any direction-changing result is in `wiki/decisions.md`. A negative result is a required write, not an optional one. See `../core/references/wiki-protocol.md` → Output Contract.
 
 ### When the experiment says DON'T ship
 

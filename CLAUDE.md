@@ -5,7 +5,8 @@
 > evolved over time.
 
 The `dev` skill is the **judgment layer** for development work: design / build / sprint / assess / train /
-evolve playbooks, plus ml/production/rag heuristics, pushback-and-teach, and the wiki protocol. Invoked as
+evolve playbooks, plus ml/production/rag heuristics. The shared spine (pushback-and-teach, the wiki
+protocol, the grounding gate, the evolution loop) is inherited from the `core` kernel (`../core/references/`). Invoked as
 `/dev` or proactively by mode detection (see `SKILL.md`).
 
 These same references are the **source material being ported into the separate harness project**
@@ -15,7 +16,7 @@ The harness mines this skill for content; it does not fork it. The two evolve on
 ## Structure
 - `SKILL.md` — entry point: principles, integrity constraints, mode detection, the Grounding Gate.
 - `modes/` — design / build / sprint / assess / train / evolve playbooks.
-- `references/` — ml-heuristics, production-thinking, rag-heuristics, pushback-and-teach, wiki-protocol, subagent-briefs.
+- `references/` — ml-heuristics, production-thinking, rag-heuristics, subagent-briefs. (Shared spine — pushback-and-teach, wiki-protocol — now lives in `../core/references/`.)
 - `scripts/` — run-tests / run-quality / run-command / analyze.py (JSON-summary wrappers).
 - `EVOLUTION.md` — the skill's self-evolution log.
 

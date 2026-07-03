@@ -170,7 +170,7 @@ Not every decision — the ones a junior engineer would benefit from seeing.
 The coordinator uses this to teach the user inline; don't skip it.
 ```
 
-**After:** Run tests yourself — do NOT trust subagent's reported output. Read the Key Decisions section and pick the single most load-bearing one to narrate to the user with a `**Why this matters:**` tag — per `references/pushback-and-teach.md`, one concept per task. If you changed any interface shape that tests depend on, re-run affected tests to confirm alignment.
+**After:** Run tests yourself — do NOT trust subagent's reported output. Read the Key Decisions section and pick the single most load-bearing one to narrate to the user with a `**Why this matters:**` tag — per `../core/references/pushback-and-teach.md`, one concept per task. If you changed any interface shape that tests depend on, re-run affected tests to confirm alignment.
 
 ---
 
