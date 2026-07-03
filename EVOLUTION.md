@@ -189,3 +189,32 @@ Not modified: everything dev-specific (modes, heuristics, integrity constraints,
 - Modes still resolve the wiki-protocol / pushback references (now under `../core/`) with no dangling links: [after: ?]
 - No behavior change from the relocation (same Output Contract, same pushback discipline): [after: ?]
 - Verdict: PENDING — mechanical relocation verified (grep clean, files present in core); needs a real dev session to confirm the references read naturally from their new home.
+---
+
+## Evolution 7 — 2026-07-04 — Lessons from the accelerator-kit build (verification instruments)
+
+### Harvest scope
+- **Project:** an internal accelerator (`an internal accelerator project`) — single heavy Build-mode session (2026-07-03): design → adversarially-reviewed spec → agent-kit build with 4 parallel extraction subagents → execution-verified cold review → hardening. Single trace, but unusually rich: the build's own deliverable was an agent workflow, so process failures were directly observable. Sibling harvest (sdlc-kit inspection) produced kit-design lessons only — consumed by the project's decisions.md, nothing skill-generalizable beyond principles dev already holds.
+
+### Patterns found
+1. **Reviewers that execute don't get re-litigated** — Impact: H, Effort: L. Proof: 3/3 kit CRITICALs arrived with reproductions (corrupted sqlite, gate bypass); fixes were immediate and regression-tested from the repro.
+2. **Deterministic gate scripts are the least-tested, most load-bearing code** — Impact: H, Effort: L. Proof: stage-gate.py string-slice bug passed the gate on a missing service while the agent markdown survived cold review untouched.
+3. **Negative claims (no secrets / no copied code) have no artifact unless you build the instrument** — Impact: M, Effort: L. Proof: user challenge "did you paste the whole project?" answered by one hash-compare (133 files, 11 matches, all empty __init__.py).
+4. **Agent-authored YAML manifests break on prose** — Impact: M, Effort: L. Proof: 3 of 4 template.yaml files invalid (colons/backticks in list items); caught only by a smoke test's safe_load.
+5. **The 3-CRITICAL stop-rule met a case where stopping added no safety** — Impact: M, Effort: L, Risk: softens a stop-rule. Proof: all three verified, one root cause, mechanical fixes, disclosed override, clean regression suite.
+
+### Hypotheses applied (each its own commit, 2026-07-04)
+1. **H1 execute-verify reviews** — `dev/references/subagent-briefs.md` (adversarial brief: run cheap reproductions; VERIFIED/HYPOTHESIZED labels) — closes pattern 1.
+2. **H2 gate-script smoke test** — `dev/modes/build.md` Phase 4 — closes pattern 2.
+3. **H3 negative-claim instruments** — `dev/modes/build.md` Phase 4 — closes pattern 3.
+4. **H4 parse-check machine artifacts** — `dev/references/subagent-briefs.md` (verification item 8) — closes pattern 4.
+5. **H5 narrow fix-and-disclose exception to the 3-CRITICAL rule** — `dev/modes/build.md` Phase 5 + adversarial brief. User-approved despite the softening risk; tripwire: arguing a borderline case into the exception = escalate. Never for integrity findings — closes pattern 5.
+
+Not modified (foundational): Integrity Constraints, Wu Wei filter. Dropped on Wu Wei: sdlc-kit-style context-compaction protocol (wiki protocol already covers it); claude-code-guide overflow gotcha (environment-specific → project wiki, candidate for user-level CLAUDE.md instead).
+
+### Validation results (fill after next 2–3 builds with reviews)
+- Adversarial findings arrive labeled; VERIFIED share > half on executable targets; re-litigation round-trips drop: [after: ?]
+- A gate/scaffold-bearing build runs the failure-path smoke and it catches (or cleanly clears) something: [after: ?]
+- Negative claims in reports carry their sweep command: [after: ?]
+- No H5 use, or an H5 use that honors all preconditions + disclosure: [after: ?]
+- Verdict per change: PENDING
