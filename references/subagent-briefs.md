@@ -262,15 +262,23 @@ SMELL TEST:
 - Are there functions that do too many things?
 - Is there dead code or unreachable branches?
 
+EXECUTE-VERIFY — where a finding can be checked by RUNNING something cheap
+(a script against a crafted input, a parser against the artifact, the failing
+path in isolation), run it and include the reproduction in the finding.
+
 For EACH finding, provide:
   - File and line number
   - What you found
+  - VERIFIED (you reproduced it — show the output) or HYPOTHESIZED (reasoned
+    from reading — say what would confirm it)
   - Severity: CRITICAL (will break) / WARNING (might break) / ADVISORY (code smell)
   - Suggested fix (one sentence)
 
 If you find nothing concerning, say so — but be genuinely skeptical.
 Do NOT rubber-stamp.
 ```
+
+**Reading the labels:** VERIFIED findings skip re-litigation — go straight to the fix, and the reproduction becomes the regression test. HYPOTHESIZED findings the coordinator re-checks before acting.
 
 **After:** CRITICAL findings must be fixed before delivery. WARNING: present to user. ADVISORY: include in handoff notes. If 3+ CRITICAL → systemic problem, STOP and escalate to user.
 
