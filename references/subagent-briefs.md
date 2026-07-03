@@ -285,7 +285,7 @@ Do NOT rubber-stamp.
 
 **Reading the labels:** VERIFIED findings skip re-litigation — go straight to the fix, and the reproduction becomes the regression test. HYPOTHESIZED findings the coordinator re-checks before acting.
 
-**After:** CRITICAL findings must be fixed before delivery. WARNING: present to user. ADVISORY: include in handoff notes. If 3+ CRITICAL → systemic problem, STOP and escalate to user.
+**After:** CRITICAL findings must be fixed before delivery. WARNING: present to user. ADVISORY: include in handoff notes. If 3+ CRITICAL → systemic problem, STOP and escalate to user (narrow fix-and-disclose exception in `modes/build.md` Phase 5: all VERIFIED + one root cause + mechanical fixes; never for integrity findings).
 
 ---
 

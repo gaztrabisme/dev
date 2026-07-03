@@ -180,7 +180,7 @@ The third case is why adversarial review is a gate **distinct from verification*
 **Keep it cold.** The reviewer gets the artifact **context-free** (file paths only — no spec, no rationale, no "why we chose X") and must **not** be the author of the code or of the tests being reviewed — author and reviewer share correlated blind spots. Test-author ≠ implementer ≠ reviewer.
 
 - **CRITICAL findings** → must fix before delivery
-- **3+ CRITICAL** → systemic problem, STOP and escalate to user
+- **3+ CRITICAL** → systemic problem, STOP and escalate to user. **Narrow exception:** you may fix-and-proceed without escalating only when ALL of these hold — every critical is VERIFIED (reproduced, not just plausible), they share one root cause, and the fixes are mechanical and regression-testable. Then fix, re-run full verification, and disclose the override prominently in the report (name the rule, say why the exception applied). If you find yourself arguing a borderline case *into* the exception, that's the signal to escalate. The exception NEVER applies to integrity-constraint findings (faked results, modified criteria, mocked production paths).
 
 ---
 
