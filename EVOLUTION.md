@@ -218,3 +218,27 @@ Not modified (foundational): Integrity Constraints, Wu Wei filter. Dropped on Wu
 - Negative claims in reports carry their sweep command: [after: ?]
 - No H5 use, or an H5 use that honors all preconditions + disclosure: [after: ?]
 - Verdict per change: PENDING
+
+---
+
+## Evolution 8 — 2026-07-04 — Validation debt: the apply half of the loop outran the validate half
+
+### Harvest scope
+- **Source: the skill's own evolution trace** (EVOLUTION.md + full git log), harvested during a convergence assessment ("where are all the paths converging?") in a remote session with no project wikis in reach — analysis deliberately scoped to this repo; project-trace validation deferred to the next cycle (that deferral *is* H1).
+- **Convergence read (recorded as context, not a change):** all seven prior cycles descend one axis — *close the looks-done/is-done gap with an instrument, at the minimum ceremony that still fires* (the Evo-2 meta-principle) — along three gradients: (1) claims acquire instruments recursively, one meta-level per cycle (work → process → the instruments → the gates themselves); (2) advisory prose → mandatory gate → harness structure; (3) blanket rules → conditional triggers + disclosed skips. The loop does not descend the model's least-resistance landscape; it **reshapes the landscape so the least-resistance path and the correct path coincide** — each gate is a ridge placed where the natural gradient runs off a cliff. Fixed points (Integrity Constraints, Wu Wei core) unmoved across all 7 cycles, as designed.
+
+### Patterns found
+1. **Validation debt: 5 consecutive cycles pending** — Impact: H, Effort: L. Evo 1–2 are validated (KEEP, measured in the Evo-4 harvest); Evo 3–7 all sit at `[after: ?]`. Cadence accelerated (1 cycle in May → 4 cycles between 06-30 and 07-04) while no validation harvest ran. The "When to Evolve" table gated on per-cycle signal availability but had **no counterweight on the aggregate unvalidated backlog** — so hypotheses stack faster than any project can exercise them, and overlapping validation windows blur which change caused which effect. In the descent metaphor: the learning rate went up while the gradient estimates went stale.
+
+### Hypotheses applied
+1. **H1 — validation-debt trigger** — `modes/evolve.md` (When to Evolve table + When NOT to Evolve) — applied. ≥3 cycles with validation pending → the next cycle is **validation-first**: harvest against the pending predictions and issue KEEP/revert/refine verdicts before proposing anything new. Self-applying: the trigger is live as of this entry, so the next evolve cycle — run where the the robotics project / knowledge-base / the document-OCR project / accelerator-kit traces are in reach — must be the Evo 3–7 validation harvest.
+
+**Deliberately not done:** the trim cycle the SKILL.md size-growth pattern suggests is due. Trimming decisions need the validation data — you can't know which gates earned their lines until you know which ones fired. Trim *after* the validation-first cycle, informed by it.
+
+Not modified (foundational): Integrity Constraints, Wu Wei filter.
+
+### Validation results (fill during the validation-first cycle)
+- The next evolve cycle is validation-first and fills Evo 3–7's `[after: ?]` blocks with verdicts before any new hypothesis lands: [after: ?]
+- Validation debt returns to ≤2 pending cycles and stays there: [after: ?]
+- New friction (the trigger blocks a genuinely urgent fix — note: the "trim immediately" row still applies, organic fixes are not gated): [after: ?]
+- Verdict: PENDING
