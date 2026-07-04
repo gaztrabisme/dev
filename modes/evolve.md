@@ -17,8 +17,9 @@ Turn the skill's own traces into improvement signals. Meta-prompting: the skill 
 | Repeated failure pattern across builds | Targeted evolve on that specific phase |
 | After significant skill changes | Validation evolve (does the change work?) |
 | User says "that was unnecessary" or skips a gate repeatedly | Trim that gate immediately — don't wait for a formal evolve cycle |
+| **≥3 evolution cycles with validation still pending** | **Validation-first cycle** — harvest against the pending predictions and issue KEEP/revert/refine verdicts *before* proposing anything new |
 
-**When NOT to evolve:** After a single build (not enough signal), mid-build (finish first), when traces are sparse (nothing to learn from).
+**When NOT to evolve:** After a single build (not enough signal), mid-build (finish first), when traces are sparse (nothing to learn from). **And don't propose new hypotheses while validation debt is ≥3 cycles** — that's steering on predicted gradients instead of measured ones; changes stack faster than any project can exercise them, and overlapping validation windows blur which change caused which effect.
 
 ---
 
