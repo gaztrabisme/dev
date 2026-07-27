@@ -218,3 +218,42 @@ Not modified (foundational): Integrity Constraints, Wu Wei filter. Dropped on Wu
 - Negative claims in reports carry their sweep command: [after: ?]
 - No H5 use, or an H5 use that honors all preconditions + disclosure: [after: ?]
 - Verdict per change: PENDING
+
+---
+
+## Evolution 8 — 2026-07-28 — Detection worked, prevention never did (an input contract for the wiki)
+
+### Harvest scope
+- **Project:** a single production build — an on-prem multi-tenant assistant (Postgres RLS, human approval ledger, irreversible external sends) across sprints S0–S5, W1.0, W2.0, W2.0b, an R1 research sprint and a defect-closing session. Traces: 8 sprint records in `wiki/log.md`, `wiki/gotchas.md`, the WBS evidence log, and every cold-review write-up.
+- **Why representative:** every sprint ran the full Build cycle *including* adversarial review, and every review write-up records its CRITICALs with mechanism and repro. Unusually dense signal on **what review catches that verification misses** — `modes/evolve.md`'s "Late catches" row.
+- **Why NOT representative:** one project, and an unusually security-heavy one. See the scope warning under each hypothesis.
+- Harvest + Pattern run coordinator-direct (user standing instruction: no subagents unless requested), not via the harvest subagent.
+
+### Patterns found
+1. **Late catches cluster into five classes and recur every sprint** — Impact: H, Effort: L. Proof: ~8 CRITICALs across 8 sprints — identity ×4 (cross-tenant takeover S1; wrong requester on a revised card S4; forged worker role S5; recovery running without a security context, 07-27), units ×2 (a cap governing reasoning *and* answer together; a constant labelled "measured" that was an estimate), plus guarantee-never-invoked (compaction fully built and never called by the loop), state-after-failure (a timeout at a persist boundary wedged the thread until redeploy), and effect-durability (double side-effect on recovery). **Detection succeeded every time; prevention never did.**
+2. **Tests cover an example, not the axis** — Impact: H, Effort: L. Proof: the recovery suite used the one tool of five with `needs_conn=False` — the only one that could not exhibit the bug — and a CRITICAL survived **five** cold reviews on the untested side of that flag. Same shape as an assemble test that sized its payload with the estimator it was meant to be independent of, and so was green while never running its own behaviour.
+3. **The knowledge was already in the skill and did not fire** — Impact: H (diagnostic), Effort: 0. Proof: `SKILL.md`'s gate-by-artifact principle already says *"confirm the instrument can see the delta you're gating on"* — the exact rule that would have caught the units bug. Present, well-written, inert. **This is what ruled out "add more prose" as a fix.**
+4. **A constant asserting provenance it doesn't carry** — Impact: M, Effort: L. Proof: `MEASURED_FIXED_PREFIX_TOKENS # measured` was a rough in-house estimate, 22% low; the guard built on it was green while the real request overflowed.
+5. **Duplication of a convention, drifting silently** — Impact: M, Effort: L. Proof: one calling convention at three call sites; the two well-covered copies passed and effectively vouched for the third, which had drifted. Folded into H2's corollary (structural invariants need structural locks) rather than given its own change.
+
+### Hypotheses applied (each its own commit, 2026-07-28)
+1. **H1 Invariant Gate** — `SKILL.md` (canonical gate, mirroring the KB Grounding Gate's shape) + `modes/design.md` (item 10) + `modes/build.md` (Phase 1) — closes pattern 1, informed by pattern 3. Diagnosis: wiki-protocol has an **output** contract and no **input** contract, so `gotchas.md` accrues the same lesson repeatedly and nothing constrains the next design. Selector-scoped: fires only on multi-tenant data, permissions/authz, irreversible or external side effects, or crash recovery. Every gate line must **name a test**; a line naming no test fails the gate.
+2. **H2 Cover the axis, not an example** — `modes/build.md` (after the Criteria Concreteness Gate) + `references/subagent-briefs.md` (test-subagent constraint) — closes patterns 2 and 5.
+3. **H3 A constant claiming to be measured must name its instrument** — `SKILL.md` Engineering Style #8 — closes pattern 4. Kept separate from H1 because it fires at a different moment: H1 asks the question while designing; H3 is checkable by reading a diff.
+
+Not modified (foundational): Integrity Constraints, Wu Wei filter. **Rejected on Wu Wei grounds:** adding more adversarial-review rounds (more symptom-chasing, and the reviews already work — the problem is they spend their budget re-finding the same five classes); and a separate `references/invariants.md` (~40 lines does not justify a file — speculative structure is what Wu Wei trims).
+
+### Honest limits of this evolution
+- **The five classes were mined from ONE codebase whose shape is unusual** (multi-tenant RLS, approval ledgers, irreversible sends). *Identity* dominating may be **context wearing the costume of principle** — see `../core/references/evolution-loop.md`. That is why H1 carries a narrow selector rather than firing on every build.
+- **The gate demonstrably does not catch everything.** Tested against the project's real history it would have caught 6 of 7 major CRITICALs; the miss was a read operation whose output fed back into its own precondition ("does this converge?"), which is none of the five. Recorded rather than papered over — the class list is a ledger of what has actually bitten, and it is expected to grow.
+- A gate can rot into theater faster than a review can. The only protection built in is that **every line must name a test**.
+
+### Validation results (fill after next 2–3 qualifying builds)
+- Literal `Invariant/<class>: … → test_…` lines appear in Key Decisions on qualifying work, each naming a real test: [after: ?]
+- Adversarial CRITICALs shift **away** from the five classes toward novel ones (a novel class is a success, not a failure — add it to the list): [after: ?]
+- Gate stays silent on non-qualifying builds (no ceremony on training pipelines / renderers / glue): [after: ?]
+- A test suite parametrises over a variant axis, with the axis named in the docstring: [after: ?]
+- At least one structural/AST lock where a convention must stay single-sourced: [after: ?]
+- Constants carry an instrument + re-run command: [after: ?]
+- **Rollback tripwire:** 3 builds producing perfunctory gate lines with no test named, or a silent skip on qualifying work → REVERT H1.
+- **Verdict per change: PENDING** — one project. H1 in particular needs a *differently shaped* codebase before it can earn KEEP; a second security-heavy project would confirm the classes without testing the selector.
