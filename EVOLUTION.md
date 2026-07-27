@@ -194,7 +194,7 @@ Not modified: everything dev-specific (modes, heuristics, integrity constraints,
 ## Evolution 7 — 2026-07-04 — Lessons from the accelerator-kit build (verification instruments)
 
 ### Harvest scope
-- **Project:** an internal accelerator (`an internal accelerator project`) — single heavy Build-mode session (2026-07-03): design → adversarially-reviewed spec → agent-kit build with 4 parallel extraction subagents → execution-verified cold review → hardening. Single trace, but unusually rich: the build's own deliverable was an agent workflow, so process failures were directly observable. Sibling harvest (sdlc-kit inspection) produced kit-design lessons only — consumed by the project's decisions.md, nothing skill-generalizable beyond principles dev already holds.
+- **Project:** an internal accelerator build — single heavy Build-mode session (2026-07-03): design → adversarially-reviewed spec → agent-kit build with 4 parallel extraction subagents → execution-verified cold review → hardening. Single trace, but unusually rich: the build's own deliverable was an agent workflow, so process failures were directly observable. Sibling harvest (sdlc-kit inspection) produced kit-design lessons only — consumed by the project's decisions.md, nothing skill-generalizable beyond principles dev already holds.
 
 ### Patterns found
 1. **Reviewers that execute don't get re-litigated** — Impact: H, Effort: L. Proof: 3/3 kit CRITICALs arrived with reproductions (corrupted sqlite, gate bypass); fixes were immediate and regression-tested from the repro.
