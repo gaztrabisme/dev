@@ -80,6 +80,18 @@ Before spawning the test subagent, run each success criterion through this litmu
 
 **When this gate is instant:** If criteria already read like test assertions (most concrete tasks), this adds zero overhead — you confirm they pass and move on.
 
+### Cover the axis, not an example
+
+**When the thing under test has a variant axis — a boolean flag, a registry of implementations, a type/kind column, a mode enum — a test must exist on BOTH sides of it, and the brief must name the axis.**
+
+Test authors reach for the simplest instance, and the simplest instance is very often the *safe* side of the risky flag. That is not carelessness; it is the default pull of writing an example instead of covering a space.
+
+Worked failure: a crash-recovery suite exercised the one tool in a five-tool registry with `needs_conn=False` — the **only** one that could not exhibit the bug being hunted. The suite was green, and a CRITICAL (an approved, irreversible external send silently never happening) survived **five** cold reviews sitting on the untested side of that flag. The convention it violated was correctly implemented at two other call sites, so those tests passed and gave false assurance.
+
+Ask before writing tests: *what dimension does this thing vary along, and am I testing one point or the space?* Then name the axis in the test docstring, so the next person can see which side is covered.
+
+Corollary — **structural locks for structural invariants.** When the invariant is "this convention exists in exactly one place," assert it by inspecting the source (parse the AST; don't grep — a grep matches the docstring explaining the rule, and a lock that fires on prose gets relaxed). Behavioural tests cannot see code that is never run.
+
 ---
 
 ## Phase 3: Build

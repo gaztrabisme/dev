@@ -54,6 +54,12 @@ Write tests that verify contract compliance. Tests are executable specifications
 - Cover ALL success criteria + edge cases from contracts
 - Do NOT read or write implementation code
 - Do NOT mock/stub the system under test
+- COVER THE AXIS, NOT AN EXAMPLE: if the thing under test varies along a
+  dimension (a boolean flag, a registry of implementations, a type/kind
+  column, a mode enum), write a test on BOTH sides of it and name the axis
+  in the docstring. Do not pick only the simplest instance — the simplest
+  instance is usually the safe side of the risky flag, and a suite that
+  covers only it is green precisely because it cannot see the bug.
 - Run tests: bash {baseDir}/scripts/run-tests.sh [test-path]
 
 TEST DESIGN — force the failure with the smallest input:
