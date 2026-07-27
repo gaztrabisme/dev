@@ -172,6 +172,38 @@ The Knowledge Base MCP (46 books: ML, databases, security, distributed systems, 
 
 **Skippable only by stating the domain isn't covered** (e.g. frontend, infra, glue code). A silent skip on a covered domain is a gate violation. The point is cheap, honest grounding — one search and one line — not ceremony.
 
+### Invariant Gate
+
+*Verdict: **PENDING** (Evolution 8 — one project, 8 sprints). Earns KEEP only after a second, different codebase exercises it.*
+
+The KB gate keeps you from improvising what a book already knows. This gate keeps you from re-discovering what **your own last sprint** already learned.
+
+**The disease it treats:** the wiki has an *output* contract (every mode writes its findings down) and no *input* contract. So `gotchas.md` accumulates the same lesson repeatedly and nothing forces the next design to be constrained by it — adversarial review then re-finds the same class of bug every sprint and everyone mistakes detection for prevention. Note that the principles below are **already stated elsewhere in this skill** and still didn't fire; the fix is an enforcement point, not more prose.
+
+**FIRES WHEN** the change touches any of: **multi-tenant data · permissions/authz · irreversible or external side effects · crash/restart recovery.** Silent otherwise — a training pipeline, a chart renderer, or glue code should never see it.
+
+**Then, BEFORE implementing — one line per applicable class in Key Decisions, each naming the TEST that proves it:**
+
+| # | Class | The question to ask out loud |
+|---|-------|------------------------------|
+| 1 | **Identity** | When this line runs, who does the datastore think is asking? |
+| 2 | **Effect durability** | Did the side effect happen, and can the system tell after a crash? |
+| 3 | **State after failure** | If this dies halfway, is the system still usable — or wedged? |
+| 4 | **Guarantee wired in** | What *calls* this? Is there a test proving the promise is reachable? |
+| 5 | **Units** | What instrument produced this number, and can it see what I'm gating on? |
+
+```
+Invariant/identity: effect runs as thread owner → test_recovery_conn_aware_side_effect
+Invariant/effect:   exactly-once across kill -9 → test_executing_crash_recovers_once
+Invariant/failure:  n/a — no persist boundary in this change
+```
+
+**A line that names no test is decoration, not a gate.** "Identity: considered" fails this gate.
+
+**Growing the list is the point.** When a review finds a CRITICAL that fits none of the five, that's a *new class* — add it here with the trace that produced it. A class that stops appearing in findings for several projects gets retired. The list is a ledger of what has actually bitten, never a wishlist.
+
+> ⚠ **Scope honesty.** These five were mined from ONE unusually security-heavy codebase (multi-tenant RLS, approval ledgers, irreversible external sends). *Identity* dominating is plausibly a property of **that project**, not of software. That's why the selector above is narrow and the verdict is PENDING — see `../core/references/evolution-loop.md` on context wearing the costume of principle.
+
 ---
 
 ## Limitations

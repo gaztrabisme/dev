@@ -17,6 +17,8 @@ Feature builds via coordinated subagents with test-driven development. YOU are t
 
 **Knowledge Base Grounding Gate:** if the build touches a KB-covered domain (ML, DB, security, distributed systems, crypto, RAG — the `+ML`/`+RAG` rows and any security/DB-internals work), apply the gate in `SKILL.md` before implementing: search the KB and record `KB: searched "<q>" → <finding|nothing relevant>` in Key Decisions. Skippable only by stating the domain isn't covered.
 
+**Invariant Gate:** if the build touches multi-tenant data, permissions/authz, irreversible or external side effects, or crash/restart recovery, apply the gate in `SKILL.md` before implementing — one line per applicable class in Key Decisions, each naming the test that proves it. A line naming no test is decoration. Silent on builds without those traits.
+
 ---
 
 ## Phase 1.5: TDD Decision
