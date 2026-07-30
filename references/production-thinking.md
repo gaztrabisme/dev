@@ -2,7 +2,7 @@
 
 Mental models for the journey from "my model works" to "this runs reliably in production." Consult during Build mode (inference pipelines, deployment) and Design mode (system architecture). These are the questions a 10-year senior asks reflexively — use them deliberately until they become reflexive.
 
-**Origin:** Distilled from senior engineer feedback on the a client CV project inference pipeline. The gap wasn't knowledge of specific tricks — it was operating at the wrong abstraction layer. At the API level, two ONNX model calls look equivalent. At the hardware level, the data movement between them dominates latency.
+**Origin:** Distilled from senior engineer feedback on a client CV inference pipeline. The gap wasn't knowledge of specific tricks — it was operating at the wrong abstraction layer. At the API level, two ONNX model calls look equivalent. At the hardware level, the data movement between them dominates latency.
 
 ---
 
