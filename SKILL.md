@@ -228,7 +228,6 @@ Invariant/failure:  n/a — no persist boundary in this change
 
 **Execution-layer companions** (not pipeline stages — skills dev *calls into* mid-build when the work touches their substrate):
 - `omlx` — when the thing being built calls a **local** MLX/oMLX endpoint. dev builds the pipeline; `omlx` owns the request contract (schema enforcement, thinking control), serving ops, batching verdicts, and whether the local model should own the role at all. Reach for it before hand-rolling an LLM client.
-- `unsloth-llm-training` — when the answer is a better checkpoint (SFT/DPO/GRPO on the GPU box).
 - `media-gen` — when the build needs generated stills/clips or synthetic training data.
 
 ## Self-Checks
