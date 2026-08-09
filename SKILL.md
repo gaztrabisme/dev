@@ -102,7 +102,7 @@ When building semantic search, RAG pipelines, hybrid retrieval, reranking, or co
 | Assessment findings → "harden", "fix findings" | **Harden** | Build mode with assessment findings as input |
 | "Train", "finetune", "experiment", "hyperparameter", "evaluate model" | **Train** | Read `modes/train.md` |
 | "Ingest", "convert", "prepare data", "wire up", "configure" | **Wire/Prep** | Coordinator works directly, no subagents |
-| "Evolve", "meta", "improve the skill", "self-improve" | **Evolve** | Read `modes/evolve.md` |
+| "Evolve", "meta", "improve the skill", "self-improve" | *(not a dev mode)* | Hand to the **`evolution`** skill — `../evolution/SKILL.md`. It owns harvesting, triage across the constellation, the hypothesis protocol and the verdict ladder. |
 
 ### Proactive Detection
 
@@ -203,7 +203,7 @@ Invariant/failure:  n/a — no persist boundary in this change
 
 **Growing the list is the point.** When a review finds a CRITICAL that fits none of the five, that's a *new class* — add it here with the trace that produced it. A class that stops appearing in findings for several projects gets retired. The list is a ledger of what has actually bitten, never a wishlist.
 
-> ⚠ **Scope honesty.** These five were mined from ONE unusually security-heavy codebase (multi-tenant RLS, approval ledgers, irreversible external sends). *Identity* dominating is plausibly a property of **that project**, not of software. That's why the selector above is narrow and the verdict is PENDING — see `../core/references/evolution-loop.md` on context wearing the costume of principle.
+> ⚠ **Scope honesty.** These five were mined from ONE unusually security-heavy codebase (multi-tenant RLS, approval ledgers, irreversible external sends). *Identity* dominating is plausibly a property of **that project**, not of software. That's why the selector above is narrow and the verdict is PENDING — see `../evolution/references/loop.md` on context wearing the costume of principle.
 
 ---
 

@@ -1,6 +1,6 @@
 # Evolution Log
 
-Periodic retrospectives that turn real project traces into skill improvements. See `modes/evolve.md`.
+Periodic retrospectives that turn real project traces into skill improvements. Mechanism: `../evolution/references/loop.md`. (Through Evolution 8 this lived in `modes/evolve.md`; the mode moved out to the `evolution` skill on 2026-08-09 because it served every skill, not just this one. Earlier entries cite the old path — they are left as written, since rewriting a ledger's body rewrites the record of what was actually thought at the time.)
 
 ---
 
@@ -244,7 +244,7 @@ Not modified (foundational): Integrity Constraints, Wu Wei filter. Dropped on Wu
 Not modified (foundational): Integrity Constraints, Wu Wei filter. **Rejected on Wu Wei grounds:** adding more adversarial-review rounds (more symptom-chasing, and the reviews already work — the problem is they spend their budget re-finding the same five classes); and a separate `references/invariants.md` (~40 lines does not justify a file — speculative structure is what Wu Wei trims).
 
 ### Honest limits of this evolution
-- **The five classes were mined from ONE codebase whose shape is unusual** (multi-tenant RLS, approval ledgers, irreversible sends). *Identity* dominating may be **context wearing the costume of principle** — see `../core/references/evolution-loop.md`. That is why H1 carries a narrow selector rather than firing on every build.
+- **The five classes were mined from ONE codebase whose shape is unusual** (multi-tenant RLS, approval ledgers, irreversible sends). *Identity* dominating may be **context wearing the costume of principle** — see `../evolution/references/loop.md`. That is why H1 carries a narrow selector rather than firing on every build.
 - **The gate demonstrably does not catch everything.** Tested against the project's real history it would have caught 6 of 7 major CRITICALs; the miss was a read operation whose output fed back into its own precondition ("does this converge?"), which is none of the five. Recorded rather than papered over — the class list is a ledger of what has actually bitten, and it is expected to grow.
 - A gate can rot into theater faster than a review can. The only protection built in is that **every line must name a test**.
 

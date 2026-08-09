@@ -23,8 +23,9 @@ The harness mines this skill for content; it does not fork it. The two evolve on
 ## Conventions for editing this skill
 - **Keep it instruction, not code.** Elegant / clean / lean. Wu Wei — add structure only when its absence
   causes a real failure, not for theoretical completeness.
-- **Evolve via the Evolve mode** (`modes/evolve.md`): generalized lessons (reusable beyond one project),
-  git-committed, human-gated, size-budgeted.
+- **Evolve via the `evolution` skill** (`../evolution/SKILL.md`): generalized lessons (reusable beyond one
+  project), git-committed, human-gated, size-budgeted. Evolve stopped being a dev mode on 2026-08-09 —
+  the machinery served every skill, not just this one.
 - **Commit discipline:** only when asked; stage explicit paths (never `git add -A`/`.`); don't stage
   `.DS_Store`; end commit messages with `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`.
 - The harness project (Rust code, its wiki, its research) lives in `../harness/` — **not here.**
