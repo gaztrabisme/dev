@@ -224,7 +224,7 @@ Invariant/failure:  n/a — no persist boundary in this change
 
 `dev` is the **build** stage of a presale→build pipeline and, like its presale peers, **inherits the shared spine from the `core` kernel** (`../core/references/wiki-protocol.md`, `../core/references/pushback-and-teach.md`, the grounding gate, the evolution loop) — referenced, not duplicated. dev keeps its engineering-specific content (modes, ml/production/rag heuristics, the KB as its grounding substrate):
 
-`business-intelligence` (know the client) → `ms-ai-discovery` (scope use cases, MS) → `solution-architect` (architect + respond) → **`dev`** (build).
+`business-intelligence` (know the client) → `ai-discovery-workshop` (scope use cases, MS) → `solution-architect` (architect + respond) → **`dev`** (build).
 
 **Execution-layer companions** (not pipeline stages — skills dev *calls into* mid-build when the work touches their substrate):
 - `omlx` — when the thing being built calls a **local** MLX/oMLX endpoint. dev builds the pipeline; `omlx` owns the request contract (schema enforcement, thinking control), serving ops, batching verdicts, and whether the local model should own the role at all. Reach for it before hand-rolling an LLM client.

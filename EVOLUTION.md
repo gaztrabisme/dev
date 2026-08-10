@@ -175,7 +175,7 @@ Not modified (foundational): Integrity Constraints, Wu Wei filter core.
 ## Evolution 6 — 2026-07-01 — Migrate the shared spine to the `core` kernel
 
 ### Harvest scope
-- **Source: a constellation-level refactor**, not a project trace. As the skill family grew (business-intelligence, solution-architect, ms-ai-discovery, skill-builder), all four reached into `../dev/references/` for *general* discipline — an oddness noted while building solution-architect. The general spine was extracted into a new `core` kernel; this entry records dev's own migration onto it.
+- **Source: a constellation-level refactor**, not a project trace. As the skill family grew (business-intelligence, solution-architect, ai-discovery-workshop, skill-builder), all four reached into `../dev/references/` for *general* discipline — an oddness noted while building solution-architect. The general spine was extracted into a new `core` kernel; this entry records dev's own migration onto it.
 
 ### Patterns found
 1. **General discipline was privileged inside `dev`** — Impact: M, Effort: M. `wiki-protocol.md` and `pushback-and-teach.md` are role-agnostic, but living in `dev` forced every non-dev skill to reference a *build* skill for non-build rules, and (once copied into `core`) created a two-copy drift risk.
