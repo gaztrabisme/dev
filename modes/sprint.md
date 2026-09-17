@@ -41,7 +41,7 @@ Wave 2: [item-c] — depends on item-a (shared file)
 
 ### Mechanical Items
 
-See `references/subagent-briefs.md` → Mechanical Edit Pattern.
+See `../references/subagent-briefs.md` → Mechanical Edit Pattern.
 
 1. Read 2-3 representative files to confirm the pattern
 2. Generate edit list: `[{file, old, new}, ...]`
@@ -58,7 +58,7 @@ Coordinator works directly. Read the file, make the change, verify.
 
 ### Constructive Items
 
-Follow Build mode (`modes/build.md`). For each item:
+Follow Build mode (`build.md`). For each item:
 1. Classify weight (Light/Medium/Heavy)
 2. Apply TDD decision heuristic (see Build mode)
 3. Use subagents when the item benefits from parallelism or isolation

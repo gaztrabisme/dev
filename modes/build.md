@@ -129,7 +129,7 @@ Typed mocks (`MagicMock(spec=ActualClass)`, `Protocol`-based fixtures) fail loud
 | Multiple files, complex logic | Implementation subagent |
 | Needs isolation from main context | Subagent (protects context window) |
 | Parallel with other work | Subagent (background) |
-| Mechanical across many files | Structured edit pattern (see `references/subagent-briefs.md`) |
+| Mechanical across many files | Structured edit pattern (see `../references/subagent-briefs.md`) |
 
 **Declare the pattern, don't default into one** (SKILL.md → Pattern Gate). `coordinator-direct` is a legitimate *declared* choice for mechanical/unambiguous work — but when a task has independent parts or logic that can be wrong, rule out fan-out / a subagent chain *on purpose*, not by omission. Subagents cost context and coordination overhead; they earn it through parallelism, isolation, or independent-reviewer separation.
 
@@ -144,9 +144,9 @@ Spawn in this order:
 4. **Verification subagent** — Tests pass, quality scan, contract compliance, no mocked production.
 5. **Adversarial review subagent** (medium/heavy only) — Cold code review, no planning context.
 
-Read `references/subagent-briefs.md` for exact prompt templates. When briefing subagents, provide ONLY the relevant prompt constraints from that file plus task-specific context. Do not forward skill-level instructions.
+Read `../references/subagent-briefs.md` for exact prompt templates. When briefing subagents, provide ONLY the relevant prompt constraints from that file plus task-specific context. Do not forward skill-level instructions.
 
-**Worker VCS hygiene (non-negotiable when subagents write code).** Workers produce file changes; the **coordinator** owns the index and the commit. No subagent runs `git add -A`/`.`, `git commit`, or any branch/reset/stash/checkout — see the isolation constraint at the top of `references/subagent-briefs.md`. When two or more implementation subagents run **in parallel**, give each its **own git worktree** so their edits can't collide or cross-stage; a shared checkout with concurrent writers corrupts silently. Reviewing and staging by explicit path is the coordinator's job, after the workers return.
+**Worker VCS hygiene (non-negotiable when subagents write code).** Workers produce file changes; the **coordinator** owns the index and the commit. No subagent runs `git add -A`/`.`, `git commit`, or any branch/reset/stash/checkout — see the isolation constraint at the top of `../references/subagent-briefs.md`. When two or more implementation subagents run **in parallel**, give each its **own git worktree** so their edits can't collide or cross-stage; a shared checkout with concurrent writers corrupts silently. Reviewing and staging by explicit path is the coordinator's job, after the workers return.
 
 ---
 

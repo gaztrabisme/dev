@@ -233,7 +233,7 @@ Include quality scan JSON summary in report.
 
 ## Adversarial Review Subagent
 
-**When:** After verification passes. Final gate before delivery. **Fire on the trigger, not the build size** (see `modes/build.md` Phase 5): a mistake that is hard-to-reverse, silent, or *green-for-the-wrong-reason*. Skip only when none holds (cheap-to-undo and loud-when-wrong), and say the skip out loud.
+**When:** After verification passes. Final gate before delivery. **Fire on the trigger, not the build size** (see `../modes/build.md` Phase 5): a mistake that is hard-to-reverse, silent, or *green-for-the-wrong-reason*. Skip only when none holds (cheap-to-undo and loud-when-wrong), and say the skip out loud.
 
 **Why:** This is a gate *distinct* from verification, not a redundant one. Verification checks the code against the spec and inherits the spec's blind spots — it cannot catch a result that's right for the wrong reason (leakage, memorization, a measurement artifact). The adversarial reviewer gets the code **cold** and must not be its author or the author of its tests (correlated blind spots).
 
@@ -291,7 +291,7 @@ Do NOT rubber-stamp.
 
 **Reading the labels:** VERIFIED findings skip re-litigation — go straight to the fix, and the reproduction becomes the regression test. HYPOTHESIZED findings the coordinator re-checks before acting.
 
-**After:** CRITICAL findings must be fixed before delivery. WARNING: present to user. ADVISORY: include in handoff notes. If 3+ CRITICAL → systemic problem, STOP and escalate to user (narrow fix-and-disclose exception in `modes/build.md` Phase 5: all VERIFIED + one root cause + mechanical fixes; never for integrity findings).
+**After:** CRITICAL findings must be fixed before delivery. WARNING: present to user. ADVISORY: include in handoff notes. If 3+ CRITICAL → systemic problem, STOP and escalate to user (narrow fix-and-disclose exception in `../modes/build.md` Phase 5: all VERIFIED + one root cause + mechanical fixes; never for integrity findings).
 
 ---
 

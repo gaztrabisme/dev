@@ -84,7 +84,7 @@ CLAUDE.md must include: Overview (the "why"), Quick Start (3-5 commands), Archit
 
 Spawn an Agent with `subagent_type: general-purpose`. Provide ONLY the spec documents (success criteria, contracts, CLAUDE.md, data models). Do NOT provide conversation context, rationale, or "why we chose X."
 
-Read `references/subagent-briefs.md` for the spec adversarial review prompt template.
+Read `../references/subagent-briefs.md` for the spec adversarial review prompt template.
 
 **After review:**
 - **CRITICAL findings** → must resolve before handoff (update spec, discuss with user)
