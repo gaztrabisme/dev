@@ -13,7 +13,7 @@ Feature builds via coordinated subagents with test-driven development. YOU are t
 | "Build an app/service/API" | Heavy | Define done + contracts → Phased Build+Test → Verify per phase → Adversarial Review |
 | Unfamiliar domain or tech | +Research | Spawn research subagent when unknowns surface |
 | ML/CV/NLP task | *(hand off first)* | The framing belongs to `../applied-ml-problem-solver` — build from its framed problem, don't reframe here |
-| Retrieval / RAG / semantic search task | *(hand off first)* | Chunking, hybrid search, rerank, enrichment and eval design belong to `../applied-ml-problem-solver/references/rag-heuristics.md` |
+| Retrieval / RAG / semantic search task | *(hand off first)* | Chunking, hybrid search, rerank, enrichment and eval design belong to `../../applied-ml-problem-solver/references/rag-heuristics.md` |
 
 **Knowledge Base Grounding Gate:** if the build touches a KB-covered domain (ML, DB, security, distributed systems, crypto, RAG — the `+ML`/`+RAG` rows and any security/DB-internals work), apply the gate in `SKILL.md` before implementing: search the KB and record `KB: searched "<q>" → <finding|nothing relevant>` in Key Decisions. Skippable only by stating the domain isn't covered.
 
@@ -60,7 +60,7 @@ When skipping TDD, state why. "Skipping TDD: deletion-only change, existing test
 
 **Test naming convention:** `test_<contract_clause>_<behavior>` (e.g., `test_api_get_users_returns_json_array`). When a test fails, the name tells you which requirement broke.
 
-**Before the approval gate:** If the task involves any non-obvious decisions (auth mechanism, DB schema shape, caching strategy, concurrency model, error-handling contract, etc.), surface them per `../core/references/pushback-and-teach.md`. List the forks with 2–3 options each, recommend one with a one-line tradeoff, and get an explicit answer. Do NOT proceed with silent defaults.
+**Before the approval gate:** If the task involves any non-obvious decisions (auth mechanism, DB schema shape, caching strategy, concurrency model, error-handling contract, etc.), surface them per `../../core/references/pushback-and-teach.md`. List the forks with 2–3 options each, recommend one with a one-line tradeoff, and get an explicit answer. Do NOT proceed with silent defaults.
 
 **STOP for user approval before building.**
 
@@ -74,7 +74,7 @@ Before spawning the test subagent, run each success criterion through this litmu
 | Does it name a specific input → output pair? | "Empty cart returns 200 with `{items: []}`" | "Handles edge cases" |
 | Would two engineers write the same test from it? | "Search with no results returns 200 + empty array" | "Search is fast" |
 
-**Any criterion that fails → pushback loop.** Apply `../core/references/pushback-and-teach.md`: name the forks, present options, get a concrete answer. Two vague answers → stop and demand binary criteria before proceeding.
+**Any criterion that fails → pushback loop.** Apply `../../core/references/pushback-and-teach.md`: name the forks, present options, get a concrete answer. Two vague answers → stop and demand binary criteria before proceeding.
 
 **Escape hatch:** User explicitly says "shallow tests are fine here" → document which criteria are vague and proceed. The test subagent will produce what it can; the gap is acknowledged, not hidden.
 
@@ -223,7 +223,7 @@ Match effort to task weight:
 
 Minimum: every success criterion either checked with evidence, deferred with reason, or marked N/A.
 
-**Output contract:** before reporting the build complete, append the outcome (with evidence pointer) to `wiki/log.md`, record any non-obvious choice in `decisions.md`, and file new failure patterns in `gotchas.md`. The build isn't done until that write exists — see `../core/references/wiki-protocol.md` → Output Contract.
+**Output contract:** before reporting the build complete, append the outcome (with evidence pointer) to `wiki/log.md`, record any non-obvious choice in `decisions.md`, and file new failure patterns in `gotchas.md`. The build isn't done until that write exists — see `../../core/references/wiki-protocol.md` → Output Contract.
 
 ---
 
