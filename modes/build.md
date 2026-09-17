@@ -12,8 +12,8 @@ Feature builds via coordinated subagents with test-driven development. YOU are t
 | "Add [feature] to [existing]" | Medium | Define done + interface shapes → Build+Test → Verify → Adversarial Review |
 | "Build an app/service/API" | Heavy | Define done + contracts → Phased Build+Test → Verify per phase → Adversarial Review |
 | Unfamiliar domain or tech | +Research | Spawn research subagent when unknowns surface |
-| ML/CV/NLP task | +ML Heuristics | Read `references/ml-heuristics.md` — reframe problem before choosing approach |
-| Retrieval / RAG / semantic search task | +RAG Heuristics | Read `references/rag-heuristics.md` — chunking, hybrid search, rerank, enrichment, eval |
+| ML/CV/NLP task | *(hand off first)* | The framing belongs to `../applied-ml-problem-solver` — build from its framed problem, don't reframe here |
+| Retrieval / RAG / semantic search task | *(hand off first)* | Chunking, hybrid search, rerank, enrichment and eval design belong to `../applied-ml-problem-solver/references/rag-heuristics.md` |
 
 **Knowledge Base Grounding Gate:** if the build touches a KB-covered domain (ML, DB, security, distributed systems, crypto, RAG — the `+ML`/`+RAG` rows and any security/DB-internals work), apply the gate in `SKILL.md` before implementing: search the KB and record `KB: searched "<q>" → <finding|nothing relevant>` in Key Decisions. Skippable only by stating the domain isn't covered.
 

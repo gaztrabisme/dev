@@ -24,7 +24,7 @@ Understand what the user wants to build, why, and what constraints exist.
 4. **Identify unknowns** — "We'll need to research [Y] to answer this"
 5. **Challenge vague intent** — Read `../core/references/pushback-and-teach.md`. When the request is business-speak ("add auth", "make it fast", "just like X"), name the concrete forks the request leaves open, present 2–3 options per fork with tradeoffs and a recommendation, and do NOT accept scope until each fork has a concrete answer. Two vague answers in a row → stop and ask for binary, testable criteria.
 6. **Teach concept gaps inline** — If the user's framing reveals a missing concept (conflating auth/authz, thinking JWT = session, treating a cache like a DB, etc.), teach the concept in 3–5 sentences with a tagged block (`**Why this matters:**`) before moving on.
-7. **ML work: Reframe before solving** — If the task involves ML/CV/NLP, read `references/ml-heuristics.md` and apply the Problem Reframing questions. Challenge the first approach: "Does the spec actually require this, or are we assuming it?" Teaching applies to ML math/intuition too, not just systems work.
+7. **ML work: hand the framing out** — If the task involves ML/CV/NLP, the reframing, metric and architecture decisions belong to `../applied-ml-problem-solver/SKILL.md` (Frame + Fit-Check + Baseline-Named gates). Get a framed problem back, then design around it. Do not reframe ML problems inside Design mode.
 8. **Greenfield library research** — If the design pulls in unfamiliar libraries, read the official docs (or web search) for accurate API signatures instead of guessing. Annotate discoveries for future sessions.
 9. **Ground domain decisions in the KB** — If the design touches a KB-covered domain (ML, DB, security, distributed systems, crypto, RAG), apply the **Knowledge Base Grounding Gate** (`SKILL.md`) before committing to an approach: search the KB for prior art and record `KB: searched "<q>" → <finding|nothing relevant>` in Key Decisions. Don't design a database/security/retrieval approach the corpus could have informed without checking it.
 10. **Apply the Invariant Gate** — If the design touches multi-tenant data, permissions/authz, irreversible or external side effects, or crash/restart recovery, work the five classes in `SKILL.md` → Invariant Gate and record one line each in Key Decisions, **naming the test** that will prove it. Design is where these are cheap; adversarial review is where they are expensive. Silent on everything else.
@@ -54,7 +54,7 @@ YOU are the coordinator. Spawn research subagents using the Agent tool for indep
 
 Each subagent gets a specific question (not "research everything about X") and presents options with tradeoffs — no final decisions.
 
-**ML work:** Before researching solutions, apply `references/ml-heuristics.md` — Problem Reframing and Architecture Decisions. Often the right research question isn't "which model?" but "what simpler problem does this reduce to?"
+**ML work:** Before researching solutions, hand to `../applied-ml-problem-solver` — it owns Problem Reframing and Architecture Decisions. Often the right research question isn't "which model?" but "what simpler problem does this reduce to?"
 
 ### The Loop-Back Rule
 

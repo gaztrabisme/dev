@@ -1,5 +1,13 @@
 # Evolution Log
 
+> **Relocation note (2026-09-17).** Entries below reference `references/ml-heuristics.md`,
+> `references/production-thinking.md`, `references/rag-heuristics.md` and `modes/train.md`.
+> Those four files left `dev` on 2026-09-17 and now live in
+> **`../applied-ml-problem-solver/references/`** (`modes/train.md` renamed `train-loop.md`).
+> The entries are left verbatim — a ledger records what happened, and rewriting history to
+> match the present is the thing this loop exists to prevent. Follow the path above when an
+> entry points at a file that is no longer here.
+
 Periodic retrospectives that turn real project traces into skill improvements. Mechanism: `../evolution/references/loop.md`. (Through Evolution 8 this lived in `modes/evolve.md`; the mode moved out to the `evolution` skill on 2026-08-09 because it served every skill, not just this one. Earlier entries cite the old path — they are left as written, since rewriting a ledger's body rewrites the record of what was actually thought at the time.)
 
 ---

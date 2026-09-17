@@ -16,7 +16,7 @@ The harness mines this skill for content; it does not fork it. The two evolve on
 ## Structure
 - `SKILL.md` — entry point: principles, integrity constraints, mode detection, the Grounding Gate.
 - `modes/` — design / build / sprint / assess / train / evolve playbooks.
-- `references/` — ml-heuristics, production-thinking, rag-heuristics, subagent-briefs. (Shared spine — pushback-and-teach, wiki-protocol — now lives in `../core/references/`.)
+- `references/` — subagent-briefs. (Shared spine — pushback-and-teach, wiki-protocol — lives in `../core/references/`. ML judgment — ml-heuristics, production-thinking, rag-heuristics, the experiment loop — moved to `../applied-ml-problem-solver/` on 2026-09-17.)
 - `scripts/` — run-tests / run-quality / run-command / analyze.py (JSON-summary wrappers).
 - `EVOLUTION.md` — the skill's self-evolution log.
 

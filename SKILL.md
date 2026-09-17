@@ -73,19 +73,27 @@ On first entry to any mode, also read `../core/references/pushback-and-teach.md`
 
 ---
 
-## Production Thinking
+## ML / CV / NLP / retrieval work — `applied-ml-problem-solver` owns the judgment
 
-When building inference pipelines, deployment systems, or anything that will run unattended in production, consult `references/production-thinking.md`. It encodes the mental models a senior engineer uses reflexively — data movement awareness, graph-level optimization, systems interaction, scale projection, hardware constraints, and operational failure modes. Use the forcing questions deliberately until they become reflexive.
+When the task is ML-shaped, the *decision* questions are not dev's: problem reframing, label
+schema, architecture and loss choice, metric and eval-set validity, the experiment loop,
+retrieval/RAG design, and the inference-serving realities (data movement, graph fusion, scale
+projection, hardware budgets) that decide whether a working model survives production. All of
+that lives in **`../applied-ml-problem-solver/SKILL.md`** and its four references — it moved
+out of dev on 2026-09-17 because it was ~46% of this skill's body and undiscoverable through
+dev's own description, which carries no ML keyword.
 
-**Peer to `ml-heuristics.md`:** ml-heuristics covers training and architecture decisions. production-thinking covers everything after "my model works" — the journey to reliable production.
+**The split is by question type, not technology:**
 
----
+| Question | Owner |
+|---|---|
+| Is this the right problem? Will this mechanism fit my constraints? How would I know it worked? What baseline must I beat? | `applied-ml-problem-solver` |
+| Write the `Dataset` subclass, the training script, the inference API, the tests | **dev** — Build mode, unchanged |
 
-## Retrieval / RAG
-
-When building semantic search, RAG pipelines, hybrid retrieval, reranking, or contextual enrichment, consult `references/rag-heuristics.md`. It covers the retrieval-specific decisions — match-unit vs. context-unit chunking, hybrid dense+BM25 fusion, reranker tiers, query-side expansion, enrichment-as-experiment, and retrieval eval harness design.
-
-**Peer to `ml-heuristics.md` and `production-thinking.md`.** Retrieval changes are especially prone to the proxy-metric and eval-set-validity traps in `ml-heuristics.md` Metrics — gate them there. The Knowledge Base MCP also has a `production-rag-guide` book worth searching for deeper theory.
+dev still builds ML code; it just doesn't decide whether the model is the right idea. On an
+ML task, hand the framing out first, then take the spec back and build it. A non-ML build that
+needs scale projection or the layer-below reasoning can read
+`../applied-ml-problem-solver/references/production-thinking.md` directly.
 
 ---
 
@@ -100,7 +108,7 @@ When building semantic search, RAG pipelines, hybrid retrieval, reranking, or co
 | "Assess", "audit", "review", "refactor", "code health", "cleanup" | **Assess** | Read `modes/assess.md` |
 | "Analyze", "root cause", "why does X fail", "evaluate results" | **Analyze** | Read `modes/assess.md` (Analyze section) |
 | Assessment findings → "harden", "fix findings" | **Harden** | Build mode with assessment findings as input |
-| "Train", "finetune", "experiment", "hyperparameter", "evaluate model" | **Train** | Read `modes/train.md` |
+| "Train", "finetune", "experiment", "hyperparameter", "evaluate model", "which model", "what metric", "reframe this ML problem" | *(not a dev mode)* | Hand to **`applied-ml-problem-solver`** — `../applied-ml-problem-solver/SKILL.md`. It owns the experiment loop, ML heuristics, RAG heuristics and production thinking. |
 | "Ingest", "convert", "prepare data", "wire up", "configure" | **Wire/Prep** | Coordinator works directly, no subagents |
 | "Evolve", "meta", "improve the skill", "self-improve" | *(not a dev mode)* | Hand to the **`evolution`** skill — `../evolution/SKILL.md`. It owns harvesting, triage across the constellation, the hypothesis protocol and the verdict ladder. |
 
@@ -111,7 +119,7 @@ When the user's task matches a mode trigger, invoke the appropriate mode WITHOUT
 - The task involves reviewing, auditing, or cleaning code (→ Assess)
 - The task involves planning architecture or specs (→ Design)
 - The task involves multiple deliverables or a backlog (→ Design → Sprint)
-- The task involves training or experimenting (→ Train)
+- The task is ML/CV/NLP *judgment* (framing, metrics, experiments, retrieval design) → **stop and hand to `applied-ml-problem-solver`**, don't absorb it
 
 Do not wait for the user to say "/dev" — match on intent.
 
@@ -162,7 +170,7 @@ The **Knowledge Base is gated** (see Grounding Gate below), not optional, on KB-
 
 ### Knowledge Base Grounding Gate
 
-The Knowledge Base MCP (46 books: ML, databases, security, distributed systems, cryptography, RAG) is the skill's grounding substrate — domain decisions should be grounded in it, not improvised. This is a **gate**, not a suggestion: Design, Train, and KB-domain Build all enforce it (each mode points here).
+The Knowledge Base MCP (46 books: ML, databases, security, distributed systems, cryptography, RAG) is the skill's grounding substrate — domain decisions should be grounded in it, not improvised. This is a **gate**, not a suggestion: Design and KB-domain Build both enforce it (each mode points here). `applied-ml-problem-solver` declares the same gate in its own terms over the same corpus.
 
 **When the task touches a KB-covered domain, BEFORE designing or implementing:**
 
@@ -226,6 +234,9 @@ Invariant/failure:  n/a — no persist boundary in this change
 
 `business-intelligence` (know the client) → `ai-discovery-workshop` (scope use cases, MS) → `solution-architect` (architect + respond) → **`dev`** (build).
 
+**Judgment-layer sibling:**
+- `applied-ml-problem-solver` — owns ML/CV/NLP/retrieval *decisions* and the experiment loop; dev owns the code that results. Split out of dev on 2026-09-17. On an ML task it runs first and hands dev a framed problem with a pre-registered gate.
+
 **Execution-layer companions** (not pipeline stages — skills dev *calls into* mid-build when the work touches their substrate):
 - `omlx` — when the thing being built calls a **local** MLX/oMLX endpoint. dev builds the pipeline; `omlx` owns the request contract (schema enforcement, thinking control), serving ops, batching verdicts, and whether the local model should own the role at all. Reach for it before hand-rolling an LLM client.
 - `media-gen` — when the build needs generated stills/clips or synthetic training data.
@@ -238,5 +249,5 @@ Invariant/failure:  n/a — no persist boundary in this change
 - **Test-health:** Does the suite have zero unexplained red? Pre-existing failures are test bit-rot — they must be triaged (fix / quarantine with reason + task / delete), not silently left red. See Build mode Phase 4.
 - **Signature changes:** When a function's shape changed, were all callers — including test mocks — grep'd and updated?
 - Does every success criterion have evidence?
-- For ML work: is the experiment log up to date?
+- For ML work: was the framing handed to `applied-ml-problem-solver`, and is its experiment log up to date?
 - Was the project wiki updated with session findings?
